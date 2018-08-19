@@ -1,4 +1,6 @@
 # v0.x
+## v0.1.1
+fix webpack.config
 ## v0.1.x
 #### Reducer
 - _receive_ one argument - __FormsList__, which is a Map of forms ids used through the application.
