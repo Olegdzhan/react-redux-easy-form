@@ -198,6 +198,11 @@ Every field object has to or may have the following propperties:
         }
     })
     ```
-2. `onChange` - a callback is used into an aproppriate __setter__, as function which get an __event__ argument and returns a value, that updates the previous one. By default it is `event => event.target.value`.
+2. `onChange` - a callback is used into an aproppriate __setter__, as a function which get an __event__ argument and returns a value, that updates the previous one. By default it is `event => event.target.value`.
 
-3.
+3. `type` (_required_) - enum `['string', 'number', 'array', 'object']`, defines an input type.
+4. `validator` - a callback which returns true or false. If returns true storage will dispatch an action with an error message defined in `errorMessage` attribute.
+5. `errorMessage` - a string value, that will be saved into the store whether the value is not valid.
+6. `validateOnChange` - a boolean value: if true, _validateField_ action creator will be called on each onChange call.
+#### formValidator
+`formValidator` is a callback which gets field values object as an argument and must return an array of string errors or an empty array.

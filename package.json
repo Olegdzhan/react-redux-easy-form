@@ -2,7 +2,7 @@
   "name": "react-redux-easy-form",
   "version": "0.1.0",
   "description": "Form decorator for react applications with ability to configure fields and validate theirs values",
-  "main": "index.js",
+  "main": "build/lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.dev.config --host 0.0.0.0",
@@ -14,8 +14,12 @@
   },
   "keywords": [
     "react-redux-form",
+    "react-form",
+    "redux-form",
     "reactive-form",
     "configure",
+    "react",
+    "redux",
     "form"
   ],
   "author": "Oleg Mukhov [olegdzhan]",
@@ -45,7 +49,17 @@
     "redux-devtools-extension": "^2.13.5",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5",
-    "webpack-merge": "^4.1.4"
-  }
+    "webpack-dev-server": "^3.1.5"
+  },
+  "peerDependencies": {
+    "react": ">=0.15.0",
+    "redux": ">=3.0.0",
+    "react-redux": ">=4.0.0",
+    "prop-types": ">=15.0.0"
+  },
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "build"
+  ]
 }
