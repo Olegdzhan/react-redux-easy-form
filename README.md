@@ -101,7 +101,7 @@ In your `.babelrc` add:
     ```javascript
     render() {
         const {
-            forms: {
+            form: {
                 fieldErrors
             },
             getters,
@@ -145,7 +145,7 @@ In your `.babelrc` add:
         }
     };
     ```
-### Form state
+## Form state
 In redux storage each form consists of following fields:
 1. `initialValues` - an object with values for each field (values from config).
 2. `currentValues` - an object with values for each field after any changes.
@@ -170,11 +170,11 @@ In redux storage it looks like:
 }
 ```
 
-### ConfigObject
-#### formName
+## ConfigObject
+### formName
 `formName` is form id via you can drop an aproppriate form. After set FormsMap to _getFormsReducer_ it will create a default form state for each of FormsMap element.
-#### fields
-Each field must has a unique `key`, which will bind with the same key in redux form state. In the example above they were _firstName_ and _lastName_.
+### fields
+Each field must have a unique `key`, which will bind with the same key in redux form state. In the example above they were _firstName_ and _lastName_.
 Every field object has to or may have the following propperties:
 1. `initialValue` (_required_) - a value or a callback which receive component props and returns a value
     ```javascript
@@ -206,3 +206,24 @@ Every field object has to or may have the following propperties:
 6. `validateOnChange` - a boolean value: if true, _validateField_ action creator will be called on each onChange call.
 #### formValidator
 `formValidator` is a callback which gets field values object as an argument and must return an array of string errors or an empty array.
+```javascript
+// actually it gets 'fieldValues' argument, but we can destruct it right away
+formValidator: ({ firstName, lastName }) => {
+    const errors = [];
+    if (!(firstName && lastName)) {
+        errors.push('Each field is required.');
+    }
+    if (firstName === lastName) {
+        errors.push('First name must not be equal to Last name');
+    }
+    return errors;
+}
+```
+## Props injected into component by @easyForm
+1. `form` - a state returned by __forms__ reducer with formName defined as __formName__ field in the config object. Thus, if you define `formName: 'user'`, it will return `forms['user']` from redux state.
+2. `getters` - an object with includes methods with the same names as you have defined in __fields__. So if your `config.fields = { firstName = {}, lastName = {} }`, it will create getters with methods: `firstName` and `lastName`. When called they return updated (current) value or initial value.
+3. `setters` - similar to __getters__, except that setters object consists of methods you have to set as __onCahnge__ input callbacks.
+4. `dropForm(formName, keepInitial) => void` - a callback clears form fields. Gets two arguments:
+    - `formName: string` - the name of form you want to drop;
+    - `keepInitial: boolean` - if true a form will be dropped and set initial values, if false - with empty default values for appropriate input type.
+5. `validateAll() => boolean` - a callback, that gets no arguments, validates all fields and returns true, whether it's valid.

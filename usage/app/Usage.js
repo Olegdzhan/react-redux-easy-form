@@ -17,15 +17,14 @@ const formConfig = {
     'secondName': {
       initialValue: 'secondName',
       type: 'string',
-      onChange: event => event.target.value + '_',
       validateOnChange: true,
       errorMessage: 'Second name is required',
       validator: val => val && val.trim()
     }
   },
   formValidator: ({ firstName, secondName }) => {
-    if (firstName && secondName && firstName[0] === secondName[0]) {
-      return ['First letters of firstName and secondName must not be equal'];
+    if (firstName && secondName && firstName === secondName) {
+      return ['First name must not be equal to Second name'];
     }
     return [];
   }
@@ -35,6 +34,15 @@ const formConfig = {
 @easyForm(formConfig)
 export default class Usage extends PureComponent {
   static propTypes = {
+    form: pt.shape({
+      initialValues: pt.shape(),
+      currentValues: pt.shape(),
+      fieldErrors: pt.exact({
+        firstName: pt.string,
+        secondName: pt.string
+      }),
+      formErrors: pt.arrayOf(pt.string)
+    }),
     getters: pt.exact({
       firstName: pt.func,
       secondName: pt.func
@@ -69,6 +77,10 @@ export default class Usage extends PureComponent {
 
   render() {
     const {
+      form: {
+        fieldErrors,
+        formErrors
+      },
       getters,
       setters
     } = this.props;
@@ -76,20 +88,27 @@ export default class Usage extends PureComponent {
       <div>
         <h1>React Redux Easy Form</h1>
         <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            value={getters.firstName()}
-            onChange={setters.firstName}
-            placeholder="First Name"
-          />
-          <input
-            type="text"
-            value={getters.secondName()}
-            onChange={setters.secondName}
-            placeholder="Second Name"
-          />
+          <div>
+            <input
+              type="text"
+              value={getters.firstName()}
+              onChange={setters.firstName}
+              placeholder="First Name"
+            />
+            <span style={{ color: 'red' }}>{fieldErrors.firstName}</span>
+          </div>
+          <div>
+            <input
+              type="text"
+              value={getters.secondName()}
+              onChange={setters.secondName}
+              placeholder="Second Name"
+            />
+            <span style={{ color: 'red' }}>{fieldErrors.secondName}</span>
+          </div>
           <button type="submit">Console out!</button>
         </form>
+        <h3 style={{ color: 'red' }}>{formErrors.join('. ')}</h3>
       </div>
     );
   }
