@@ -3,10 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { getFormsReducer } from 'lib';
 import { Forms } from './constants';
 
-const forms = getFormsReducer(Forms);
+const myForms = getFormsReducer(Forms);
 
 const rootReducer = combineReducers({
-  forms,
+  myForms,
   response: (state = { firstName: 'oleg' }, action) => state
 });
 

@@ -31,12 +31,13 @@ In your `.babelrc` add:
     import { getFormsReducer } from 'react-redux-easy-form';
     // also import your FormsMap if it was defined in separate file
 
-    const forms = getFormsReducer(FormsMap); // it must be named "forms" at the moment
+    const forms = getFormsReducer(FormsMap);
     export default combineReducers({
         // your reducers
         forms
     });
     ```
+    By default the decorator will be looking for forms reference in `state => state.forms`
 
 ## Use the decorator
 1. Import __easyForm__ decorator (HOC)
@@ -89,7 +90,7 @@ In your `.babelrc` add:
                 return ['First name and Last name must not be equal.'];
             }
             return [];
-        };
+        }
     };
     ```
 4. Decorate the component with `easyForm` and the config
@@ -173,6 +174,22 @@ In redux storage it looks like:
 ## ConfigObject
 ### formName
 `formName` is form id via you can drop an aproppriate form. After set FormsMap to _getFormsReducer_ it will create a default form state for each of FormsMap element.
+### getFormsFrom
+Can be defined as function which return a reference to a field in your redux store containing forms, or can be undefined (forms will be got from `state => state.forms`)
+```javascript
+// store config
+const myForm = getFormsReducer(FormsMap);
+combineReducers({
+  myForm
+});
+
+// in a form component
+const config = {
+    formName: FormsMap.USER_FORM,
+    getFormsFrom: state => state.myForm
+    // ...
+};
+``` 
 ### fields
 Each field must have a unique `key`, which will bind with the same key in redux form state. In the example above they were _firstName_ and _lastName_.
 Every field object has to or may have the following propperties:

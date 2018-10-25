@@ -6,6 +6,7 @@ import { Forms } from './constants';
 
 const formConfig = {
   formName: Forms.TEST_FORM_1,
+  getFormsFrom: state => state.myForms,
   fields: {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
