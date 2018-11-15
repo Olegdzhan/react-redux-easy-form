@@ -1,6 +1,6 @@
 {
   "name": "react-redux-easy-form",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Form decorator for react applications with ability to configure fields and validate theirs values",
   "main": "build/lib.js",
   "scripts": {
