@@ -11,14 +11,14 @@ const formConfig = {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
-      validateOnChange: true,
+      validateOnChange: false,
       errorMessage: 'First name must have more than 5 letters',
       validator: val => val && val.trim() && val.length > 5
     },
     'secondName': {
       initialValue: 'secondName',
       type: 'string',
-      validateOnChange: true,
+      validateOnChange: false,
       errorMessage: 'Second name is required',
       validator: val => val && val.trim()
     }

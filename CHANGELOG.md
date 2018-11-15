@@ -1,6 +1,10 @@
 # v0.x
+## v0.3.1
+fixed _validateOnChange_ config flag
+## v0.3.0
+added _getFormsFrom_ config callback
 ## v0.1.1
-fix webpack.config
+fixed webpack.config
 ## v0.1.x
 #### Reducer
 - _receive_ one argument - __FormsList__, which is a Map of forms ids used through the application.
