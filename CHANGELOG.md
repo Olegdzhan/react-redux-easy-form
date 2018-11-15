@@ -1,5 +1,5 @@
 # v0.x
-## v0.3.1
+## v0.3.2
 fixed _validateOnChange_ config flag
 ## v0.3.0
 added _getFormsFrom_ config callback
