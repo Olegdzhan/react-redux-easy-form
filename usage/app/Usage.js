@@ -52,6 +52,14 @@ export default class Usage extends PureComponent {
       firstName: pt.func,
       secondName: pt.func
     }),
+    validators: pt.exact({
+      firstName: pt.func,
+      secondName: pt.func,
+    }),
+    removers: pt.exact({
+      firstName: pt.func,
+      secondName: pt.func,
+    }),
     response: pt.shape(),
     dropForm: pt.func,
     validateAll: pt.func
@@ -83,7 +91,9 @@ export default class Usage extends PureComponent {
         formErrors
       },
       getters,
-      setters
+      setters,
+      validators,
+      removers,
     } = this.props;
     return (
       <div>
@@ -94,15 +104,18 @@ export default class Usage extends PureComponent {
               type="text"
               value={getters.firstName()}
               onChange={setters.firstName}
+              onBlur={validators.firstName}
               placeholder="First Name"
             />
             <span style={{ color: 'red' }}>{fieldErrors.firstName}</span>
+            <button type="button" onClick={removers.firstName}>Clear</button>
           </div>
           <div>
             <input
               type="text"
               value={getters.secondName()}
               onChange={setters.secondName}
+              onBlur={validators.firstName}
               placeholder="Second Name"
             />
             <span style={{ color: 'red' }}>{fieldErrors.secondName}</span>

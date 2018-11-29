@@ -1,4 +1,6 @@
 # v0.x
+## v0.4.0
+add _removers_ and _validators_ on each field
 ## v0.3.2
 fixed _validateOnChange_ config flag
 ## v0.3.0

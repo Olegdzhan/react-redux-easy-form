@@ -244,3 +244,5 @@ formValidator: ({ firstName, lastName }) => {
     - `formName: string` - the name of form you want to drop;
     - `keepInitial: boolean` - if true a form will be dropped and set initial values, if false - with empty default values for appropriate input type.
 5. `validateAll() => boolean` - a callback, that gets no arguments, validates all fields and returns true, whether it's valid.
+6. `validators` - similar to __getters__, except each function will be called for same field. Use it in _onFocus_, _onBlur_ for example.
+7. `removers` -  similar to __getters__, contains callbacks to clear same field.
