@@ -11,17 +11,21 @@ const formConfig = {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
-      validateOnChange: false,
       errorMessage: 'First name must have more than 5 letters',
       validator: val => val && val.trim() && val.length > 5
     },
     'secondName': {
       initialValue: 'secondName',
       type: 'string',
-      validateOnChange: false,
       errorMessage: 'Second name is required',
       validator: val => val && val.trim()
-    }
+    },
+    'middleName': {
+      initialValue: '',
+      type: 'string',
+      errorMessage: 'Middle name is required',
+      validator: val => val.length > 0,
+    },
   },
   formValidator: ({ firstName, secondName }) => {
     if (firstName && secondName && firstName === secondName) {
@@ -40,25 +44,30 @@ export default class Usage extends PureComponent {
       currentValues: pt.shape(),
       fieldErrors: pt.exact({
         firstName: pt.string,
-        secondName: pt.string
+        secondName: pt.string,
+        middleName: pt.string,
       }),
       formErrors: pt.arrayOf(pt.string)
     }),
     getters: pt.exact({
       firstName: pt.func,
-      secondName: pt.func
+      secondName: pt.func,
+      middleName: pt.func
     }),
     setters: pt.exact({
       firstName: pt.func,
-      secondName: pt.func
+      secondName: pt.func,
+      middleName: pt.func
     }),
     validators: pt.exact({
       firstName: pt.func,
       secondName: pt.func,
+      middleName: pt.func
     }),
     removers: pt.exact({
       firstName: pt.func,
       secondName: pt.func,
+      middleName: pt.func
     }),
     response: pt.shape(),
     dropForm: pt.func,
@@ -70,15 +79,17 @@ export default class Usage extends PureComponent {
     const {
       getters: {
         firstName,
-        secondName
+        secondName,
+        middleName
       },
       dropForm,
       validateAll
     } = this.props;
-    if (validateAll()) {
+    if (validateAll({ exclude: ['middleName'] })) {
       console.log({
         firstName: firstName(),
-        secondName: secondName()
+        secondName: secondName(),
+        middleName: middleName()
       });
       dropForm(Forms.TEST_FORM_1);
     }
@@ -107,18 +118,28 @@ export default class Usage extends PureComponent {
               onBlur={validators.firstName}
               placeholder="First Name"
             />
-            <span style={{ color: 'red' }}>{fieldErrors.firstName}</span>
             <button type="button" onClick={removers.firstName}>Clear</button>
+            <span style={{ color: 'red' }}>{fieldErrors.firstName}</span>
           </div>
           <div>
             <input
               type="text"
               value={getters.secondName()}
               onChange={setters.secondName}
-              onBlur={validators.firstName}
+              onBlur={validators.secondName}
               placeholder="Second Name"
             />
+            <button type="button" onClick={removers.secondName}>Clear</button>
             <span style={{ color: 'red' }}>{fieldErrors.secondName}</span>
+          </div>
+          <div>
+            <input
+              type="text"
+              value={getters.middleName()}
+              onChange={setters.middleName}
+              placeholder="Middle Name"
+            />
+            <span style={{ color: 'red' }}>{fieldErrors.middleName}</span>
           </div>
           <button type="submit">Console out!</button>
         </form>
