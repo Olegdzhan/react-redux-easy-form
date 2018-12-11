@@ -12,7 +12,7 @@ const formConfig = {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
       errorMessage: 'First name must have more than 5 letters',
-      validator: val => val && val.trim() && val.length > 5
+      validator: val => val && val.trim() && val.length > 3
     },
     'secondName': {
       initialValue: 'secondName',
