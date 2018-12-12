@@ -1,4 +1,8 @@
 # v0.x
+## v0.5.2
+bugfix: removers clear initial values
+## v0.5.1
+bugfix: do not validate initial values on _dirty_ field
 ## v0.5.0
 add _rules?: { exclude: Array\<string\> }_ argument to _validateAll_ prop
 fix _removers_ callbacks: now do not return initialValues after executing
