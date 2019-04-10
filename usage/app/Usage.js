@@ -24,7 +24,7 @@ const formConfig = {
       validateOnChange: true
     },
     'secondName': {
-      initialValue: 'secondName',
+      initialValue: '',
       type: 'string',
       validator: val => {
         if (val && val.trim()) {
