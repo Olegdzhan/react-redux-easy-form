@@ -11,8 +11,17 @@ const formConfig = {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
-      errorMessage: 'First name must have more than 5 letters',
-      validator: val => val && val.trim() && val.length > 3
+      errorMessage: ['First name must be set.', 'First name must be longer than 3 letters.'],
+      validator: val => {
+        let result = true;
+        if (!val || !val.trim()) {
+          result = 0;
+        } else if (val.length <= 3) {
+          result = 1;
+        }
+        return result;
+      },
+      validateOnChange: true
     },
     'secondName': {
       initialValue: 'secondName',

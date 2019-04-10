@@ -1,4 +1,6 @@
 # v0.x
+## v0.6.0
+Ability to return number from validator callback, which is an index of error Array.
 ## v0.5.2
 bugfix: removers clear initial values
 ## v0.5.1
