@@ -11,15 +11,16 @@ const formConfig = {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
-      errorMessage: ['First name must be set.', 'First name must be longer than 3 letters.'],
+      errorMessage: ['First name must be set.', 'First name must be in letters.'],
       validator: val => {
-        let result = true;
-        if (!val || !val.trim()) {
-          result = 0;
-        } else if (val.length <= 3) {
-          result = 1;
+        if (val) {
+          const trimmed = val.trim();
+          if (trimmed) {
+            return /^[-\sA-Za-zА-Яа-я]+$/.test(trimmed) ? true : 1;
+          }
+          return 0;
         }
-        return result;
+        return 0;
       },
       validateOnChange: true
     },
