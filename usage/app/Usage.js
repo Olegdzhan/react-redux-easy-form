@@ -11,24 +11,27 @@ const formConfig = {
     'firstName': {
       initialValue: ({ response }) => response.firstName,
       type: 'string',
-      errorMessage: ['First name must be set.', 'First name must be in letters.'],
       validator: val => {
         if (val) {
           const trimmed = val.trim();
           if (trimmed) {
-            return /^[-\sA-Za-zА-Яа-я]+$/.test(trimmed) ? true : 1;
+            return /^[-\sA-Za-zА-Яа-я]+$/.test(trimmed) ? null : 'First name must be in letters.';
           }
-          return 0;
+          return 'First name must be set.';
         }
-        return 0;
+        return 'First name must be set.';
       },
       validateOnChange: true
     },
     'secondName': {
       initialValue: 'secondName',
       type: 'string',
-      errorMessage: 'Second name is required',
-      validator: val => val && val.trim()
+      validator: val => {
+        if (val && val.trim()) {
+          return null;
+        }
+        return 'Second name is required';
+      }
     },
     'middleName': {
       initialValue: '',
