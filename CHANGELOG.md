@@ -1,5 +1,5 @@
 # v0.x
-## v7.0.0
+## v0.7.0
 __errorMessage__ in config is depricated. Validator callback should return error message or null
 ## v6.0.1
 fix array of errors
