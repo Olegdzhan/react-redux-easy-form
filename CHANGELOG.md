@@ -1,4 +1,6 @@
 # v0.x
+## v0.7.7
+fix condition in __validateAll__ method
 ## v0.7.6
 fix __validateAll__ method
 ## v0.7.5
