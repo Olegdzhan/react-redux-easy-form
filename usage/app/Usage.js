@@ -82,9 +82,15 @@ export default class Usage extends PureComponent {
       secondName: pt.func,
       middleName: pt.func
     }),
+    clearError: pt.exact({
+      firstName: pt.func,
+      secondName: pt.func,
+      middleName: pt.func
+    }),
     response: pt.shape(),
     dropForm: pt.func,
-    validateAll: pt.func
+    validateAll: pt.func,
+    clearFormErrors: pt.func,
   };
 
   onSubmit = event => {
@@ -114,6 +120,8 @@ export default class Usage extends PureComponent {
         fieldErrors,
         formErrors
       },
+      clearFormErrors,
+      clearError,
       getters,
       setters,
       validators,
@@ -155,6 +163,8 @@ export default class Usage extends PureComponent {
             <span style={{ color: 'red' }}>{fieldErrors.middleName}</span>
           </div>
           <button type="submit">Console out!</button>
+          <button type="button" onClick={clearFormErrors}>Clear form errors</button>
+          <button type="button" onClick={clearError.firstName}>Clear first name error</button>
         </form>
         <h3 style={{ color: 'red' }}>{formErrors.join('. ')}</h3>
       </div>

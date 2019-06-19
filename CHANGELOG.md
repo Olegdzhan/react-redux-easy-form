@@ -1,4 +1,6 @@
 # v0.x
+## v0.8.0
+add props __clearError__, __clearFormErrors__
 ## v0.7.7
 fix condition in __validateAll__ method
 ## v0.7.6
