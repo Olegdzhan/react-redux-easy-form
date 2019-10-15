@@ -248,3 +248,15 @@ formValidator: ({ firstName, lastName }) => {
 7. `removers` -  similar to __getters__, contains callbacks to clear same field.
 8. `clearError` - similar to __getters__, contains callbacks to clear error message for current field.
 9. `clearFormErrors` - clear __formErrors__ array (props.form.formErrors)
+
+## Action-creators
+You can use the following action creators to influence on easy-form manually right from your application middleware:
+- _setValue(formName: string, fieldKey: string, value: any)_ - set the value of the control of the form
+- _setInitialValues(formName: string, initialValues: Array<{ \[fieldKey: string\]: any}>)_ set the initialValues as a map of the form
+- _validateField(formName: string, fieldKey: string, errorMessage: string)_ set an error to the field of the form
+- _clearFieldError(formName: string, fieldKey: string)_ - remove all errors from the field of the form
+- _clearFormErrors(formName: string)_ - remove all errors from the form
+- _validateForm(formName: string, errorsArray: string[])_ - set crossfields errors to the form
+- _dropForm(formName: string, saveInitial: boolean)_ - drop of the values from all the fields of the form, if saveInitial set to true, keep the initial values
+- _makeDirty(formName: string, fieldKey: string)_ - set the field of the form to status dirty
+- _makePristine(formName: string, fieldKey: string)_ - set the field of the form to status pristine
