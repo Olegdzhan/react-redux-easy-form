@@ -1,0 +1,30 @@
+[ignore]
+<PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/*.test.js
+
+[libs]
+
+[lints]
+
+[options]
+esproposal.optional_chaining=enable
+
+module.system=haste
+
+module.file_ext=.js
+module.file_ext=.json
+
+munge_underscores=true
+
+module.name_mapper='^.*?\.\(bmp\|gif\|svg\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
+
+suppress_type=$FlowFixMe
+
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
+
+esproposal.decorators=ignore
+
+[strict]
+
+[untyped]
+<PROJECT_ROOT>/node_modules/.*

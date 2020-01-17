@@ -1,0 +1,10 @@
+*.css
+*.scss
+*.html
+*.svg
+*.png
+*.jpeg
+*.test.js
+*.config.js
+webpack/*
+node_modules

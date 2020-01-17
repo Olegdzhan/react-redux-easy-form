@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import pt from 'prop-types';
+// import pt from 'prop-types';
 import { easyForm } from 'lib';
 import { Forms } from './constants';
 
@@ -51,47 +51,47 @@ const formConfig = {
 @connect(({ response }) => ({ response }))
 @easyForm(formConfig)
 export default class Usage extends PureComponent {
-  static propTypes = {
-    form: pt.shape({
-      initialValues: pt.shape(),
-      currentValues: pt.shape(),
-      fieldErrors: pt.exact({
-        firstName: pt.string,
-        secondName: pt.string,
-        middleName: pt.string,
-      }),
-      formErrors: pt.arrayOf(pt.string)
-    }),
-    getters: pt.exact({
-      firstName: pt.func,
-      secondName: pt.func,
-      middleName: pt.func
-    }),
-    setters: pt.exact({
-      firstName: pt.func,
-      secondName: pt.func,
-      middleName: pt.func
-    }),
-    validators: pt.exact({
-      firstName: pt.func,
-      secondName: pt.func,
-      middleName: pt.func
-    }),
-    removers: pt.exact({
-      firstName: pt.func,
-      secondName: pt.func,
-      middleName: pt.func
-    }),
-    clearError: pt.exact({
-      firstName: pt.func,
-      secondName: pt.func,
-      middleName: pt.func
-    }),
-    response: pt.shape(),
-    dropForm: pt.func,
-    validateAll: pt.func,
-    clearFormErrors: pt.func,
-  };
+  // static propTypes = {
+  //   form: pt.shape({
+  //     initialValues: pt.shape(),
+  //     currentValues: pt.shape(),
+  //     fieldErrors: pt.exact({
+  //       firstName: pt.string,
+  //       secondName: pt.string,
+  //       middleName: pt.string,
+  //     }),
+  //     formErrors: pt.arrayOf(pt.string)
+  //   }),
+  //   getters: pt.exact({
+  //     firstName: pt.func,
+  //     secondName: pt.func,
+  //     middleName: pt.func
+  //   }),
+  //   setters: pt.exact({
+  //     firstName: pt.func,
+  //     secondName: pt.func,
+  //     middleName: pt.func
+  //   }),
+  //   validators: pt.exact({
+  //     firstName: pt.func,
+  //     secondName: pt.func,
+  //     middleName: pt.func
+  //   }),
+  //   removers: pt.exact({
+  //     firstName: pt.func,
+  //     secondName: pt.func,
+  //     middleName: pt.func
+  //   }),
+  //   clearError: pt.exact({
+  //     firstName: pt.func,
+  //     secondName: pt.func,
+  //     middleName: pt.func
+  //   }),
+  //   response: pt.shape(),
+  //   dropForm: pt.func,
+  //   validateAll: pt.func,
+  //   clearFormErrors: pt.func,
+  // };
 
   onSubmit = event => {
     event.preventDefault();
