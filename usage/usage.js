@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,8 +9,8 @@ import store from './app/store';
 render(
   (
     <Provider store={store}>
-      <Usage/>
+      <Usage />
     </Provider>
   ),
-  document.getElementById('react-redux-easy-form-usage')
+  document.getElementById('react-redux-easy-form-usage'),
 );
