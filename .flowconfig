@@ -8,6 +8,7 @@
 
 [options]
 esproposal.optional_chaining=enable
+module.name_mapper='^lib' ->'<PROJECT_ROOT>/lib'
 
 module.system=haste
 

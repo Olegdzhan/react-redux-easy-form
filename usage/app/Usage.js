@@ -9,7 +9,7 @@ type TProps = TEasyFormHocProps & TUsageProps;
 @connect(({ response }) => ({ response }))
 @easyForm(formConfig)
 export default class Usage extends PureComponent<TProps> {
-  onSubmit = event => {
+  onSubmit = (event: Object): void => {
     event.preventDefault();
     const {
       form: {

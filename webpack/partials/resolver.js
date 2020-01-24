@@ -4,7 +4,7 @@ const devResolve = {
     modules: ['node_modules'],
     extensions: ['.js', '.scss'],
     alias: {
-        lib: path.join(__dirname, '../../lib')
+        lib: path.resolve(__dirname, '../../lib')
     }
 };
 

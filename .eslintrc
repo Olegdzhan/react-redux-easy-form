@@ -6,6 +6,16 @@
     "plugin:react/recommended"
   ],
   "plugins": ["react", "jsx-a11y", "import", "babel"],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["lib", "./lib"]
+        ],
+        "extensions": ["js"]
+      }
+    }
+  },
   "rules": {
     "import/prefer-default-export": 0,
     "react/default-props-match-prop-types": 0,
