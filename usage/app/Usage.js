@@ -1,6 +1,7 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { easyForm, type TEasyFormHocProps } from 'lib';
+import { easyForm, type TEasyFormHocProps } from '../../lib';
 import formConfig from './formConfig';
 import type { TUsageProps } from './TUsageProps';
 
@@ -17,12 +18,11 @@ export default class Usage extends PureComponent<TProps> {
       },
       formActions: {
         dropForm,
-        validateAll,
       },
+      validateAll,
     } = this.props;
     if (validateAll({ exclude: ['lastName'] })) {
-      console.log(values);
-      dropForm();
+      dropForm(true);
     }
   };
 
@@ -41,6 +41,7 @@ export default class Usage extends PureComponent<TProps> {
       validators,
       removers,
     } = this.props;
+
     return (
       <div>
         <h1>React Redux Easy Form</h1>
@@ -71,7 +72,9 @@ export default class Usage extends PureComponent<TProps> {
           <button type="button" onClick={clearFormErrors}>Clear form errors</button>
           <button type="button" onClick={clearError.firstName}>Clear first name error</button>
         </form>
-        <h3 style={{ color: 'red' }}>{formErrors.join('. ')}</h3>
+        {formErrors && (
+          <h3 style={{ color: 'red' }}>{formErrors.join('. ')}</h3>
+        )}
       </div>
     );
   }

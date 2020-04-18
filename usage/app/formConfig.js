@@ -1,10 +1,9 @@
 // @flow
-
 import type {
   TEasyFormConfig,
   TEasyFormHocValuesField,
   TEasyFormHocFormErrors,
-} from 'lib';
+} from '../../lib';
 import { FormsMap } from './constants';
 import type { TUsageProps } from './TUsageProps';
 
@@ -12,6 +11,7 @@ const formConfig: TEasyFormConfig = {
   formName: FormsMap.TEST_FORM_1,
   fields: {
     firstName: {
+      emptyValue: '',
       initialValue: ({ response }: TUsageProps): string => response.firstName,
       validateOnChange: true,
       validator: (val: string = ''): string | null => {
@@ -25,6 +25,7 @@ const formConfig: TEasyFormConfig = {
       },
     },
     lastName: {
+      emptyValue: '',
       initialValue: '',
       validator: (val: string = ''): string | null => {
         if (val.trim()) {
@@ -34,9 +35,9 @@ const formConfig: TEasyFormConfig = {
       },
     },
   },
-  formValidator: ({ firstName, secondName }: TEasyFormHocValuesField): TEasyFormHocFormErrors => {
+  formValidator: ({ firstName, lastName }: TEasyFormHocValuesField): TEasyFormHocFormErrors => {
     const result: string[] = [];
-    if (firstName && secondName && firstName === secondName) {
+    if (firstName && lastName && firstName === lastName) {
       result.push('First name must not be equal to Second name');
     }
     return result;

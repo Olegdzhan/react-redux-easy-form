@@ -6,7 +6,6 @@ const resolver = require('./partials/resolver').dev;
 
 module.exports = {
     mode: 'development',
-    devtool: 'cheap-module-eval-source-map',
     devServer: {
         hot: true,
         host: '0.0.0.0',
