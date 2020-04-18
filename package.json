@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack/dev.js --host 0.0.0.0",
-    "build": "rimraf build && webpack/prod.js --progress --profile --bail"
+    "build": "rimraf build && webpack/prod.js --progress --profile --bail",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",

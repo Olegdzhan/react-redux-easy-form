@@ -1,52 +1,62 @@
-# react-redux-easy-form
-`react-redux-easy-form` helps you connect your forms with redux easier and create a readable way to define onChange callbacks and validators.
+# react-redux-easy-form@1.0.0
+`react-redux-easy-form` helps you connect your forms with redux easier
 
-## Installation
+## Table of Contents
+### [Installation](#installation)
+### [Forms Reducer](#reducer)
+### [Using the HOC](#hoc)
+### [Easy Form Configuration](#configuration)
+### [Provided Props](#props)
+### [Action Creators](#actions)
+### [Selectors](#selectors)
+### [Field Statuses](#statuses)
+### [Using With React-Redux @connect](#connect)
+### [Migrating From v0.x](#migrating)
+
+## <a name="installation">Installation</a>
 ```node
 npm i react-redux-easy-form --save
 ```
-It also need `react`, `redux`, `react-redux` to be installed.
 
-You can add `babel-plugin-transform-decorators-legacy` to your `.babelrc`, to decorate React-components with decorator notation.
-
-In your `.babelrc` add:
-```javascript
-{
-    "presets": ["react", "env"],
-    "plugins": ["transform-decorators-legacy"]
-}
-```
-
-## Configuring redux-store
-1. Define your __FormsMap__
+## <a name="reducer">Creating Forms Reducer</a>
+1. Define your __FormsMap__ - a map, which contains the names of your forms. It allows to bind your form with redux store.
     ```javascript
     const FormsMap = {
-        USER_FORM: 'userForm',
-        PRODUCT_FORM: 'productForm'
+        UserForm: 'userForm',
+        ProductForm: 'productForm'
     };
     ```
 2. Add __formsReducer__ to your __rootReducer__
     ```javascript
-    import { combineReducer } from 'redux';
+    import { combineReducers } from 'redux';
     import { getFormsReducer } from 'react-redux-easy-form';
     // also import your FormsMap if it was defined in separate file
 
     const forms = getFormsReducer(FormsMap);
     export default combineReducers({
         // your reducers
-        forms
+        forms,
     });
     ```
-    By default the decorator will be looking for forms reference in `state => state.forms`
+    By default the decorator will be looking for the forms reference in `state => state.forms`
 
-## Use the decorator
+## Use the @easyForm HOC
 1. Import __easyForm__ decorator (HOC)
     ```javascript
-    import { easyForm } from 'react-redux-easy-form';
+    import {
+      easyForm,
+      type TEasyFormHocProps,
+      type TEasyFormConfig,
+      type TEasyFormHocValuesField,
+      type TEasyFormHocFormErrors,
+    } from 'react-redux-easy-form';
     ```
 2. Create a React-component with form you want to configure
     ```javascript
-    export default class UserForm extends PureComponent {
+    type TProps = TEasyFormHocProps & {
+      title: string;
+    }
+    export default class UserForm extends PureComponent<TProps> {
         onSubmit = event => {
             event.preventDefault();
         };
@@ -54,7 +64,7 @@ In your `.babelrc` add:
         render() {
             return (
                 <div>
-                    <h1>User Form</h1>
+                    <h1>{this.props.title}</h1>
                     <form onSubmit={this.onSubmit}>
                         <input type="text" />
                         <input type="text" />
@@ -67,46 +77,47 @@ In your `.babelrc` add:
     ```
 3. Create a config object for `easyForm`
     ```javascript
-    const config = {
-        formName: FormsMap.USER_FORM,
+    const config: TEasyFormConfig = {
+        formName: FormsMap.UserForm,
         fields: {
             firstName: {
-                initialValue: 'Oleg',
+                emptyValue: '',
+                initialValue: 'Name',
                 type: 'string',
                 validateOnChange: true,
                 errorMessage: 'First name is required',
-                validator: val => val && val.trim()
+                validator: val => val && val.trim(),
             },
             secondName: {
+                emptyValue: '',
                 initialValue: props => props.lastName,
                 type: 'string',
                 validateOnChange: true,
                 errorMessage: 'Second name must be longer than 4 letters',
-                validator: val => val && val.trim() && val.length > 4
-            }
+                validator: val => val && val.trim() && val.length > 4,
+            },
         },
-        formValidator: ({ firstName, lastName }) => {
+        formValidator: ({ firstName, lastName }: TEasyFormHocValuesField): TEasyFormHocFormErrors => {
             if (firstName && lastName && firstName === lastName) {
                 return ['First name and Last name must not be equal.'];
             }
-            return [];
-        }
+        },
     };
     ```
 4. Decorate the component with `easyForm` and the config
     ```javascript
     @easyForm(config)
-    export default class UserForm extends PureComponent { /*...*/ }
+    export default class UserForm extends PureComponent<TProps> { /*...*/ }
     ```
-5. Now UserForm has access to `getters` and `setters` props, either to `dropForm`, `validateAll` callback-props and the entire form (_FormsMap.USER_FORM_) state, as `form` prop. Lets use it in render method then.
+5. Now FormsMap.UserForm has access to `values` and `setters` props, either to all props in type TEasyFormHocProps.
     ```javascript
     render() {
         const {
             form: {
-                fieldErrors
+                values,
+                fieldErrors,
             },
-            getters,
-            setters
+            setters,
         } = this.props;
 
         return (
@@ -116,13 +127,13 @@ In your `.babelrc` add:
                     <span>{fieldErrors.firstName}</span>
                     <input
                         type="text"
-                        value={getters.firstName()}
+                        value={values.firstName}
                         onChange={setters.firstName}
                     />
                     <span>{fieldErrors.secondName}</span>
                     <input
                         type="text"
-                        value={getters.secondName()}
+                        value={values.secondName}
                         onChange={setters.secondName}
                     />
                     <button type="submit">Submit!</button>
@@ -136,127 +147,98 @@ In your `.babelrc` add:
     onSubmit = event => {
         event.preventDefault();
         const {
-            form,
+            form: { values },
             validateAll,
             dropForm
         } = this.props;
         if (validateAll()) {
-            console.log(form);
-            dropForm(FormsMap.USER_FORM);
+            // do something with values
+            dropForm();
         }
     };
     ```
-## Form state
-In redux storage each form consists of following fields:
-1. `initialValues` - an object with values for each field (values from config).
-2. `currentValues` - an object with values for each field after any changes.
-3. `fieldErrors` - an object with error messages for each field.
-4. `formErrors` - an array of common errors in the form.
-In redux storage it looks like:
-```javascript
-[formName]: {
-    initialValues: {
-        firstName: '',
-        lastName: ''
-    },
-    currentValues: {
-        firstName: 'John',
-        lastName: 'Doe'
-    },
-    fieldErrors: {
-        firstName: null,
-        lastName: null
-    },
-    formErrors: []
-}
-```
+   
+## <a name="configuration">Easy Form Configuration</a>
+If you use flow-types you can import next to your application:
+- **TEasyFormConfig** - type of the whole configuration object
+- **TEasyFormFieldConfig** - type of each field in your config
+### TEasyFormConfig fields:
+1. **formName (required)** - the name of the form, which must be initiated in your FormsMap.
+2. **fields (required)** - a configuration for each field on the form `{ [fieldKey: string]: TEasyFormFieldConfig }`. The fieldKey you set in the config will be correspond with the same key in *props.form.values[key]*.
+3. **formValidator (optional)** - the function validator for set values.
+### TEasyFormFieldConfig fields:
+1. **emptyValue (required)** - the value, which will be set after you clear a field value (call dropForm, of clearFieldValue).
+2. **initialValue (required)** - the value, which set into the field on the form mounts. Can also be a callback with `props` argument.
+3. **onChange (optional)** - the callback to parse an output value from an input value. By default: `event => event.target.value`.
+4. **validateOnChange (optional)** - the boolean allows call the field validator function on each change if `true`. By default: `false`.
+5. **validator (optional)** - the field validator function, get the value and return an error message or null.
 
-## ConfigObject
-### formName
-`formName` is form id via you can drop an aproppriate form. After set FormsMap to _getFormsReducer_ it will create a default form state for each of FormsMap element.
-### getFormsFrom
-Can be defined as function which return a reference to a field in your redux store containing forms, or can be undefined (forms will be got from `state => state.forms`)
-```javascript
-// store config
-const myForm = getFormsReducer(FormsMap);
-combineReducers({
-  myForm
-});
+## <a name="props">Props injected into a component by @easyForm</a>
+If you use flow-types, you can import type TEasyFormHocProps, which contains all props are provided
+@easyForm provides 3 groups of props:
+### Props you can reach from `props.form`
+1. `props.form.values` - a map of values, where a key is the fieldKey from the configuration object. EasyForm knows which value it needs to set: initial or current.
+2. `props.form.initialValues` - a map of initial values.
+3. `props.form.fieldErrors` - a map of errors corresponding to the fields. 
+4. `props.form.formErrors` - the array of errors returned by `formValidator`.
+5. `props.form.statuses` - a map of statuses corresponding to the fields (*pristine* or *dirty*).
+### Props you can reach from `props.formActions`
+They are all action-creators provided by the library. They are **already bound** to `formName`.
+### Props you can reach from `props`
+1. `props.setters` - a map of callbacks, you can put into a form-control onChange prop. Similar to `props.formActions.setValue`, but calls as `setters[fieldName](value)` instead of `setValue(fieldName, value)`.
+2. `props.validators` - a map of validators callbacks. Similar to `props.formActions.validateField`, but calls as `validators[fieldName]()` instead of `validateField(fieldName, message)`.
+3. `props.removers` - a map of functions to clear corresponding fields values.
+4. `props.validateAll` - a function, which calls all validators in the form. If you need not to validate some fields, you can set an optional argument: `validateAll({ exclude: ['firstName', 'lastName'] })`.
+5. `props.clearError` - a map of functions to clear corresponding to the fields errors. Similar to `props.formActions.clearFieldError`, but calls as `clearError[fieldName]()` instead of `clearFieldError(fieldName)`. 
 
-// in a form component
-const config = {
-    formName: FormsMap.USER_FORM,
-    getFormsFrom: state => state.myForm
-    // ...
-};
-``` 
-### fields
-Each field must have a unique `key`, which will bind with the same key in redux form state. In the example above they were _firstName_ and _lastName_.
-Every field object has to or may have the following propperties:
-1. `initialValue` (_required_) - a value or a callback which receive component props and returns a value
-    ```javascript
-    firstName: {
-        initialValue: props => props.firstName
-    },
-    lastName: {
-        initialValue: 'Doe'
-    }
-    ```
-    __warning__: if a component got props you need as initial values from react-redux __connect__, you must place it __before__ `easyForm` HOC.
-    ```javascript
-    // right - connect is defined before easyForm
-    @connect(({ user }) => ({ user }))
-    @easyForm({
-        /* ... */
-        fields: {
-            firstName: {
-                initialValue: ({ user }) => user.firstName
-            }
-        }
-    })
-    ```
-2. `onChange` - a callback is used into an aproppriate __setter__, as a function which get an __event__ argument and returns a value, that updates the previous one. By default it is `event => event.target.value`.
-
-3. `type` (_required_) - enum `['string', 'number', 'array', 'object']`, defines an input type.
-4. `validator` - a callback which returns true or false. If returns true storage will dispatch an action with an error message defined in `errorMessage` attribute.
-5. `errorMessage` - a string value, that will be saved into the store whether the value is not valid.
-6. `validateOnChange` - a boolean value: if true, _validateField_ action creator will be called on each onChange call.
-#### formValidator
-`formValidator` is a callback which gets field values object as an argument and must return an array of string errors or an empty array.
-```javascript
-// actually it gets 'fieldValues' argument, but we can destruct it right away
-formValidator: ({ firstName, lastName }) => {
-    const errors = [];
-    if (!(firstName && lastName)) {
-        errors.push('Each field is required.');
-    }
-    if (firstName === lastName) {
-        errors.push('First name must not be equal to Last name');
-    }
-    return errors;
-}
-```
-## Props injected into component by @easyForm
-1. `form` - a state returned by __forms__ reducer with formName defined as __formName__ field in the config object. Thus, if you define `formName: 'user'`, it will return `forms['user']` from redux state.
-2. `getters` - an object with includes methods with the same names as you have defined in __fields__. So if your `config.fields = { firstName = {}, lastName = {} }`, it will create getters with methods: `firstName` and `lastName`. When called they return updated (current) value or initial value.
-3. `setters` - similar to __getters__, except that setters object consists of methods you have to set as __onCahnge__ input callbacks.
-4. `dropForm(formName, keepInitial) => void` - a callback clears form fields. Gets two arguments:
-    - `formName: string` - the name of form you want to drop;
-    - `keepInitial: boolean` - if true a form will be dropped and set initial values, if false - with empty default values for appropriate input type.
-5. `validateAll(rules?: Object) => boolean` - a callback, that gets no arguments, validates all fields and returns true, whether it's valid. You can define _rules.exclude_ argument with an array of fields name, which you don't want to validate via validateAll.
-6. `validators` - similar to __getters__, except each function will be called for same field. Use it in _onFocus_, _onBlur_ for example.
-7. `removers` -  similar to __getters__, contains callbacks to clear same field.
-8. `clearError` - similar to __getters__, contains callbacks to clear error message for current field.
-9. `clearFormErrors` - clear __formErrors__ array (props.form.formErrors)
-
-## Action-creators
+## <a name="actions">Action Creators</a>
 You can use the following action creators to influence on easy-form manually right from your application middleware:
-- _setValue(formName: string, fieldKey: string, value: any)_ - set the value of the control of the form
-- _setInitialValues(formName: string, initialValues: Array<{ \[fieldKey: string\]: any}>)_ set the initialValues as a map of the form
-- _validateField(formName: string, fieldKey: string, errorMessage: string)_ set an error to the field of the form
-- _clearFieldError(formName: string, fieldKey: string)_ - remove all errors from the field of the form
-- _clearFormErrors(formName: string)_ - remove all errors from the form
-- _validateForm(formName: string, errorsArray: string[])_ - set crossfields errors to the form
-- _dropForm(formName: string, saveInitial: boolean)_ - drop of the values from all the fields of the form, if saveInitial set to true, keep the initial values
-- _makeDirty(formName: string, fieldKey: string)_ - set the field of the form to status dirty
-- _makePristine(formName: string, fieldKey: string)_ - set the field of the form to status pristine
+- `setValue(formName: string, fieldKey: string, value: any)` - set the value of the control of the form
+- `setInitialValues(formName: string, initialValues: Array<{ [fieldKey: string]: any}>)` set the initialValues as a map of the form values
+- `setEmptyValues(formName: string, fieldsConfig: { [fieldKey: string]: TEasyFormFieldConfig })` set the emptyValues
+- `validateField(formName: string, fieldKey: string, errorMessage: string)` set an error to the field of the form
+- `clearFieldError(formName: string, fieldKey: string)` - remove all errors from the field of the form
+- `clearFormErrors(formName: string)` - remove all errors from the form
+- `validateForm(formName: string, errorsArray: string[])` - set crossfields errors to the form
+- `dropForm(formName: string, saveInitial: boolean)` - drop of the values from all the fields of the form, if saveInitial set to true, keep the initial values
+- `makeDirty(formName: string, fieldKey: string)` - set the field of the form to status dirty
+- `makePristine(formName: string, fieldKey: string)` - set the field of the form to status pristine
+
+## <a name="selectors">Selectors</a>
+- `rootFormsSelector => TFormsBranchState` - return forms branch from store
+- `selectForm(formName: string) => TFormState` - return a specific form
+- `selectFormErrors(formName: string) => TEasyFormHocFormErrors` - return formErrors array for a specific form (may return undefined)
+- `selectFormFieldErrors(formName: string) => TEasyFormHocErrorsField` - return the map { fieldName: error } for a specific form
+- `selectFormInitialValues(formName: string) => TEasyFormHocValuesField` - return the map { fieldName: initialValue } for a specific form
+- `selectFormCurrentValues(formName: string) => TEasyFormHocValuesField` - return the map { fieldName: currentValue } for a specific form
+- `selectFormStatuses(formName: string) => TEasyFormHocStatusesField` - return the map { fieldName: status } for a specific form
+- `selectFormValues(formName: string) => TEasyFormHocValuesField` - return the map { fieldName: values } for a specific form. The value might be initial or current depending on status
+- `selectFormStructuredProps(formName: string) => TFormStructuredProps` - return all data for a specific form equals to `props.form` in form component. 
+
+## <a name="statuses">Field Statuses</a>
+There are two statuses:
+`import { FieldStatus, type TFieldStatus } from 'react-redux-easy-form';`
+- `FieldStatus.Pristine`
+- `FieldStatus.Dirty`
+
+## <a name="connect">Using With React-Redux @connect and custom hocs</a>
+if a component got props you need as initial values from react-redux __connect__, you must place it __before__ `easyForm` HOC.
+```javascript
+@connect(({ user }) => ({ user }))
+@easyForm({
+    /* ... */
+    fields: {
+        firstName: {
+            initialValue: ({ user }) => user.firstName
+        }
+    }
+})
+```
+
+## <a name="migrating">Migrating From v0.x</a>
+1. Replace all `props.getters` with `props.form.values`
+2. Replace all `props.errors` with `props.form.errors`
+3. Remove `type` in field configuration.
+4. Add `emptyValue` for each field configuration.
+5. Be sure your **fields-validators** return `string` or `null`.
+6. Do not set formName argument to `dropForm`, it's automatically bound in the dispatcher.

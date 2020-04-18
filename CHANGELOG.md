@@ -1,3 +1,10 @@
+# v1.x
+## v1.0.0
+- add flow-types
+- optimized rendering
+- add data-memoizing
+- new interfaces, close to v.0.x
+- easy migrating from v.0.x
 # v0.x
 ## v0.9.0
 add to export internal action creators
