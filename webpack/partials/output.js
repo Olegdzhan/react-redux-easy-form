@@ -7,9 +7,9 @@ const dev = {
 };
 
 const prod = {
-    path: path.resolve(__dirname, '../../lib'),
+    path: path.resolve(__dirname, '../../bundle'),
     publicPath: '/',
-    filename: '[name].js',
+    filename: 'easy-form.js',
     library: 'reactReduxEasyForm',
     libraryTarget: 'umd',
 };

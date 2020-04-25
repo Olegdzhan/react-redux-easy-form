@@ -48,7 +48,9 @@
     "localStorage": true,
     "clearTimeout": true,
     "setTimeout": true,
-    "Promise": true
+    "Promise": true,
+    "$Keys": true,
+    "$Values": true
   },
   "env": {
     "browser": true,

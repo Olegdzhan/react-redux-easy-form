@@ -7,9 +7,44 @@ import type { TUsageProps } from './TUsageProps';
 
 type TProps = TEasyFormHocProps & TUsageProps;
 
+const stubFn = () => {};
+const stubMap = {};
+
+const easyFormHocDefaultProps: TEasyFormHocProps = {
+  form: {
+    values: stubMap,
+    initialValues: stubMap,
+    statuses: stubMap,
+    fieldErrors: stubMap,
+    formErrors: null,
+  },
+  formActions: {
+    setValue: stubFn,
+    setInitialValues: stubFn,
+    setEmptyValues: stubFn,
+    validateField: stubFn,
+    validateForm: stubFn,
+    dropForm: stubFn,
+    makeDirty: stubFn,
+    makePristine: stubFn,
+    clearFieldError: stubFn,
+    clearFormErrors: stubFn,
+  },
+  setters: stubMap,
+  removers: stubMap,
+  validators: stubMap,
+  clearError: stubMap,
+  validateAll: () => true,
+};
+
 @connect(({ response }) => ({ response }))
 @easyForm(formConfig)
 export default class Usage extends PureComponent<TProps> {
+  static defaultProps = {
+    ...easyFormHocDefaultProps,
+    response: { firstName: '' },
+  };
+
   onSubmit = (event: Object): void => {
     event.preventDefault();
     const {
@@ -22,6 +57,7 @@ export default class Usage extends PureComponent<TProps> {
       validateAll,
     } = this.props;
     if (validateAll({ exclude: ['lastName'] })) {
+      console.log(values);
       dropForm(true);
     }
   };
