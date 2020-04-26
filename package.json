@@ -1,14 +1,16 @@
 {
   "name": "react-redux-easy-form",
-  "version": "0.9.0",
+  "version": "1.0.0.beta-1",
   "description": "Form decorator for react applications with ability to configure fields and validate theirs values",
+  "jsnext:main": "es/index.js.flow",
   "main": "bundle/easy-form.js",
+  "module": "es/index.js.flow",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack/dev.js --host 0.0.0.0",
+    "dclean": "rimraf bundle && rimraf es",
     "build:lib": "webpack --config webpack/prod.js --progress --profile --bail",
-    "build:flow": "flow-copy-source -v lib bundle",
-    "build": "rimraf bundle && npm run build:lib && npm run build:flow",
+    "build:flow": "flow-copy-source -v lib es",
+    "build": "npm run clean && npm run build:lib && npm run build:flow",
     "flow": "flow"
   },
   "repository": {
@@ -26,7 +28,7 @@
     "form"
   ],
   "author": "Oleg Mukhov [olegdzhan]",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Olegdzhan/react-redux-easy-form/issues"
   },
@@ -90,9 +92,7 @@
   },
   "files": [
     "bundle",
-    "lib",
-    "usage",
-    "CHANGELOG.md",
-    "README.md"
+    "es",
+    "usage"
   ]
 }

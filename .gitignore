@@ -1,5 +1,7 @@
 .idea/
 bundle/
+es/
+src/
 node_modules/
 *.log
 **/*.log
