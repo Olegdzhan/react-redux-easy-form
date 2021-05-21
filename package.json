@@ -1,12 +1,11 @@
 {
   "name": "react-redux-easy-form",
-  "version": "0.9.0",
-  "description": "Form decorator for react applications with ability to configure fields and validate theirs values",
+  "version": "1.0.0",
+  "description": "Form hooks for react applications with ability to configure fields and validate theirs values",
   "main": "build/lib.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config webpack.dev.config --host 0.0.0.0",
-    "build": "rimraf build && webpack --progress --profile --bail"
+    "dev": "webpack serve --config ./webpack/webpack.dev.config.js",
+    "build": "webpack --progress --profile --bail ./webpack/webpack.prod.config.js"
   },
   "repository": {
     "type": "git",
@@ -29,33 +28,36 @@
   },
   "homepage": "https://github.com/Olegdzhan/react-redux-easy-form#readme",
   "dependencies": {
-    "prop-types": "^15.6.2",
-    "react": "^16.4.2",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "react-dom": "^16.4.2",
-    "redux-devtools-extension": "^2.13.5",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "@babel/core": "^7.14.3",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/react": "^17.0.6",
+    "@types/react-dom": "^17.0.5",
+    "@types/react-redux": "^7.1.16",
+    "@types/redux": "^3.6.0",
+    "@webpack-cli/serve": "^1.4.0",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "html-webpack-plugin": "^5.3.1",
+    "path-browserify": "^1.0.1",
+    "redux-devtools-extension": "^2.13.9",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "peerDependencies": {
-    "react": ">=0.15.0",
-    "redux": ">=3.0.0",
-    "react-redux": ">=4.0.0",
-    "prop-types": ">=15.0.0"
+    "react": ">=17.0.0",
+    "redux": ">=4.0.0",
+    "react-redux": ">=7.2.0"
   },
   "files": [
     "README.md",

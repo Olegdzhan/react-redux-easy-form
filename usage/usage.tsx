@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import Usage from './app/Usage';
-import store from './app/store';
+import { FormUsage } from './app/form-usage';
+import { store } from './app/store';
 
 render(
   (
     <Provider store={store}>
-      <Usage/>
+      <FormUsage />
     </Provider>
   ),
-  document.getElementById('react-redux-easy-form-usage')
+  document.getElementById('easy-form-usage'),
 );
