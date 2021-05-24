@@ -2,6 +2,7 @@ const entry = require('./entry/entry.dev');
 const output = require('./output/output.dev');
 const modules = require('./modules/modules.dev');
 const plugins = require('./plugins/plugins.dev');
+const resolver = require('./resolve/resolve.dev');
 
 module.exports = {
   mode: 'development',
@@ -10,10 +11,7 @@ module.exports = {
   devtool: 'eval-source-map',
   module: modules,
   plugins,
-  resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
-    modules: ['node_modules'],
-  },
+  resolve: resolver,
   devServer: {
     compress: true,
     hot: true,

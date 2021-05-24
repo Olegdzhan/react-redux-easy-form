@@ -1,6 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  path: path.resolve(__dirname, '../../build'),
+  path: path.resolve(__dirname, '../../lib'),
   filename: 'index.js',
 };

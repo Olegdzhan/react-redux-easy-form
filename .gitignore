@@ -1,5 +1,5 @@
 .idea/
-build/
+lib/
 node_modules/
 *.log
 **/*.log

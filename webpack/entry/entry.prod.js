@@ -1,4 +1,6 @@
+const path = require('path');
+
 module.exports = [
   '@babel/polyfill',
-  '../../lib/index.ts',
+  path.resolve(__dirname, '../../src/index.ts'),
 ];

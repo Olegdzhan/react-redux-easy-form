@@ -2,25 +2,25 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "declaration": false,
+    "declaration": true,
     "downlevelIteration": true,
     "importHelpers": true,
     "jsx": "react",
     "lib": [
-      "es2018",
-      "dom"
+      "ESNext",
+      "DOM"
     ],
-    "module": "es2020",
+    "module": "ESNext",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "paths": {
-      "@lib/*": ["lib/*"]
+      "@src/*": ["src/*"]
     },
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
-    "outDir": "types",
+    "outDir": "lib/types",
     "sourceMap": true,
     "target": "es2015"
   },
-  "include": ["lib/**/*", "usage/**/*"]
+  "include": ["src/**/*", "usage/**/*"]
 }

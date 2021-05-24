@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-  path: path.resolve(__dirname, '../../build'),
-  filename: 'lib.js',
+  path: path.resolve(__dirname, '../../lib'),
+  filename: 'index.js',
   library: 'reactReduxEasyForm',
   libraryTarget: 'umd',
 };
