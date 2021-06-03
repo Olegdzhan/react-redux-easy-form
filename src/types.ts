@@ -46,3 +46,18 @@ export type TFormFieldStruct<Value> = {
 export type TValidator = (value: any) => string | null;
 
 export type TFormValidator = (values: { [P in TPseudoAnyEnum]?: any }) => string[] | null;
+
+export type TUseFieldSubscription<V> = {
+  errors: string[] | null | undefined;
+  isFieldValid: boolean;
+  isPristine: boolean;
+  onChange: (value: any) => void;
+  validate: () => void;
+  value: V | null;
+};
+
+export interface IFieldConfig {
+  changeValueGetter?: (onChangeCallbackArg: any) => any;
+  validateOnChange?: boolean;
+  validators?: TValidator[];
+}

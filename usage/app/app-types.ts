@@ -1,4 +1,4 @@
-import { TForms } from '@src/types';
+import { TForms } from '@/src';
 import { EContactsFieldName } from './contacts';
 import { EProfileFieldName, ESexValue } from './profile';
 import { EFormName } from './app-enums';

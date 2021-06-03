@@ -22,22 +22,20 @@ export const changeValueAndValidate = (
   formName: TPseudoAnyEnum,
   fieldName: TPseudoAnyEnum,
   value: any,
-  validators: TValidator[],
 ) => ({
   type: EEasyFormLogicActionType.ChangeValueAndValidate,
-  payload: {
-    formName,
-    fieldName,
-    value,
-    validators,
-  },
+  payload: { formName, fieldName, value },
 } as const);
 
 export const validateField = (
   formName: TPseudoAnyEnum,
   fieldName: TPseudoAnyEnum,
-  validators: TValidator[],
 ) => ({
   type: EEasyFormLogicActionType.ValidateField,
-  payload: { formName, fieldName, validators },
+  payload: { formName, fieldName },
+} as const);
+
+export const validateAll = (formName: TPseudoAnyEnum) => ({
+  type: EEasyFormLogicActionType.ValidateAll,
+  payload: { formName },
 } as const);

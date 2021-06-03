@@ -66,7 +66,7 @@ export const dropForm = (formName: TPseudoAnyEnum) => ({
 } as const);
 
 export type TActionCreators =
-  ReturnType<typeof changeFieldValue> |
+  ReturnType<typeof setFieldValue> |
   ReturnType<typeof clearFieldValue> |
   ReturnType<typeof clearFieldErrors> |
   ReturnType<typeof setFieldErrors> |

@@ -11,20 +11,20 @@ export class RootValidator {
 
   constructor(formName: TPseudoAnyEnum) {
     if (!RootValidator.instances[formName]) {
-      RootValidator.instances[formName] = new RootValidator(formName);
+      RootValidator.instances[formName] = this;
     }
     return RootValidator.instances[formName];
   }
 
-  applyFieldValidators(fieldName: TPseudoAnyEnum, validators: TValidator[]): void {
+  public applyFieldValidators(fieldName: TPseudoAnyEnum, validators: TValidator[]): void {
     this.fieldsValidators[fieldName] = validators;
   }
 
-  applyFormValidator(formValidator: TFormValidator): void {
+  public applyFormValidator(formValidator: TFormValidator): void {
     this.formValidator = formValidator;
   }
 
-  get validators(): [TFormValidator | undefined, { [P in TPseudoAnyEnum]?: TValidator[] }] {
+  public get validators(): [TFormValidator | undefined, { [P in TPseudoAnyEnum]?: TValidator[] }] {
     return [this.formValidator, this.fieldsValidators];
   }
 }

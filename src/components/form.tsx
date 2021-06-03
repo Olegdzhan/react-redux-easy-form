@@ -7,35 +7,38 @@ import { TFormValidator, TPseudoAnyEnum } from '../types';
 
 interface IFormProps {
   children: React.ReactNode;
-  initialValues: { [P in TPseudoAnyEnum]: any };
-  formName: TPseudoAnyEnum;
-  onSubmit: (event: React.SyntheticEvent) => void;
+  className?: string;
+  initialValues?: { [P in TPseudoAnyEnum]: any };
+  name: TPseudoAnyEnum;
+  onSubmit?: (event: React.SyntheticEvent) => void;
   validate?: TFormValidator;
 }
 
 export const Form = React.memo<IFormProps>(({
   children,
-  initialValues,
-  formName,
+  className,
+  initialValues= {},
+  name,
   onSubmit,
   validate,
 }) => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(initiateForm(formName, initialValues));
+    dispatch(initiateForm(name, initialValues));
     if (validate) {
-      const rootValidator = new RootValidator(formName);
+      const rootValidator = new RootValidator(name);
       rootValidator.applyFormValidator(validate);
     }
   }, []);
 
   return (
     <form
-      name={formName as string}
+      className={className}
+      name={name as string}
       onSubmit={onSubmit}
     >
-      <FormContext.Provider value={formName}>
+      <FormContext.Provider value={name}>
         {children}
       </FormContext.Provider>
     </form>

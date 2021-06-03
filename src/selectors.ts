@@ -172,27 +172,45 @@ export const createGetIsFormFieldPristine = <FormStruct extends TObjectWithEnumK
   ): boolean => !fieldStatus || fieldStatus === EEasyFormFieldStatus.Pristine,
 );
 
-export const createGetFormStateFieldData = <FormStruct extends TObjectWithEnumKeys, Value>(
+export const createGetFormFieldValueForValidation = <R, FormStruct extends TObjectWithEnumKeys>(
   formName: TPseudoAnyEnum,
   fieldName: TPseudoAnyEnum,
-  providedFormStateFields: EEasyFormField[] = [EEasyFormField.Values, EEasyFormField.Statuses],
 ) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (form: TEasyForm<FormStruct> | undefined): TFormFieldStruct<Value> | undefined => {
-    if (!form) {
+  createGetIsFormFieldPristine<FormStruct>(formName, fieldName),
+  createGetFormFieldInitialValue<R, FormStruct>(formName, fieldName),
+  createGetFormFieldValue<R, FormStruct>(formName, fieldName),
+  (
+    isPristine: boolean,
+    initialValue: R | undefined,
+    value: R | undefined,
+  ): R | undefined => (
+    isPristine ? value || initialValue : value
+  ),
+);
+
+export const createGetFormValuesForValidation = <FormStruct extends TObjectWithEnumKeys>(
+  formName: TPseudoAnyEnum,
+) => createSelector(
+  createGetFormStatuses<FormStruct>(formName),
+  createGetFormInitialValues<FormStruct>(formName),
+  createGetFormValues<FormStruct>(formName),
+  (
+    formStatuses: TEasyFormStatuses<FormStruct> | undefined,
+    formInitials: Partial<FormStruct> | undefined,
+    formValues: Partial<FormStruct> | undefined,
+  ): Partial<FormStruct> | undefined => {
+    if (!formStatuses || !formInitials || !formValues) {
       return;
     }
-    if (!providedFormStateFields.includes(EEasyFormField.Statuses)) {
-      var safetyProvidedFields = [...providedFormStateFields];
-      safetyProvidedFields.push(EEasyFormField.Statuses);
-    }
-    const providedField = safetyProvidedFields ?? providedFormStateFields;
-    return providedField.reduce((acc: TFormFieldStruct<Value>, cur: EEasyFormField) => {
-      // @ts-ignore
-      acc[cur] = cur === EEasyFormField.FormErrors
-        ? form[cur]
-        : form[cur]?.[fieldName];
-      return acc;
-    }, <TFormFieldStruct<Value>>{})
+
+    const result: Partial<FormStruct> = {};
+    const setResultKeyValue = (key: keyof FormStruct) => {
+      result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine
+        ? formValues[key] || formInitials[key]
+        : formValues[key];
+    };
+    Object.keys(formInitials).forEach(setResultKeyValue);
+    Object.keys(formValues).forEach(setResultKeyValue);
+    return result;
   },
 );

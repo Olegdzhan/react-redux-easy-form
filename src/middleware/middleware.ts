@@ -5,11 +5,14 @@ import {
   setFieldErrors,
   setFieldStatus,
   setFieldValue,
+  setFormErrors,
 } from '../action-creators';
 import { EEasyFormFieldStatus } from '../enums';
+import { RootValidator } from '../root-validator';
 import {
   createGetFormFieldErrors,
-  createGetFormFieldValue,
+  createGetFormFieldValueForValidation,
+  createGetFormValuesForValidation,
   createGetIsFormFieldPristine,
   getForms,
 } from '../selectors';
@@ -17,7 +20,7 @@ import { TForms, TValidator } from '../types';
 import { changeValue, validateField } from './middleware-actions';
 import { EEasyFormLogicActionType } from './middleware-enums';
 
-export const easyFormLogic = <S extends { forms: TForms }>
+export const easyFormMiddleware = <S extends { forms: TForms }>
   (store: Store<S>) => (next: Dispatch) => (action: AnyAction) => {
     const state: S = store.getState();
     const formsState = getForms(state);
@@ -30,8 +33,11 @@ export const easyFormLogic = <S extends { forms: TForms }>
     switch (action.type) {
       case EEasyFormLogicActionType.ChangeValue: {
         const { formName, fieldName, value } = action.payload;
-        next(setFieldValue(formName, fieldName, value));
-        return next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
+        const fieldIsPristine = createGetIsFormFieldPristine(formName, fieldName)(state);
+        if (fieldIsPristine) {
+          next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
+        }
+        return next(setFieldValue(formName, fieldName, value));
       }
 
       case EEasyFormLogicActionType.ClearValue: {
@@ -41,20 +47,24 @@ export const easyFormLogic = <S extends { forms: TForms }>
       }
 
       case EEasyFormLogicActionType.ChangeValueAndValidate: {
-        const { formName, fieldName, value, validators } = action.payload;
+        const { formName, fieldName, value } = action.payload;
         store.dispatch(changeValue(formName, fieldName, value));
-        return store.dispatch(validateField(formName, fieldName, validators));
+        return store.dispatch(validateField(formName, fieldName));
       }
 
       case EEasyFormLogicActionType.ValidateField: {
-        const { formName, fieldName, validators } = action.payload;
-        const currentFieldValue = createGetFormFieldValue<any>(formName, fieldName)(state);
-        const fieldIsPristine = createGetIsFormFieldPristine(formName, fieldName);
-        if (fieldIsPristine) {
-          return;
+        const { formName, fieldName } = action.payload;
+        const currentFieldValue: any = createGetFormFieldValueForValidation(formName, fieldName)(state);
+
+        const rootValidator = new RootValidator(formName);
+        const fieldsValidators = rootValidator.validators[1];
+        if (!fieldsValidators[fieldName]) {
+          throw new Error(`Seems you try to validate field ${fieldName} of form ${formName}, but have not set the validator function for the field`);
         }
-        const nextFieldErrors: string[] = validators.map((validator: TValidator) => validator(currentFieldValue))
-          .filter((val: ReturnType<TValidator>): val is string => Boolean(val));
+        const nextFieldErrors: string[] = fieldsValidators[fieldName].map(
+          (validator: TValidator) => validator(currentFieldValue)
+        ).filter((val: ReturnType<TValidator>): val is string => Boolean(val));
+
         const fieldErrors = createGetFormFieldErrors(formName, fieldName)(state);
         if (fieldErrors && !nextFieldErrors.length) {
           return next(clearFieldErrors(formName, fieldName));
@@ -66,7 +76,27 @@ export const easyFormLogic = <S extends { forms: TForms }>
       }
 
       case EEasyFormLogicActionType.ValidateAll: {
+        const { formName } = action.payload;
+        const rootValidator = new RootValidator(formName);
+        const [formValidator, fieldsValidators] = rootValidator.validators;
+        const values = createGetFormValuesForValidation(formName);
 
+        if (!values) {
+          return next(action);
+        }
+
+        if (formValidator) {
+          const errors = formValidator(values);
+          next(setFormErrors(formName, errors));
+        }
+
+        const validationKeys = Object.keys(fieldsValidators);
+        if (validationKeys.length) {
+          validationKeys.forEach((key) => {
+            next(validateField(formName, key));
+          })
+        }
+        return next(action);
       }
 
       default:
