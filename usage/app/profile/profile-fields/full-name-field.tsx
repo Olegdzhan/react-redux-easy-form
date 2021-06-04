@@ -8,6 +8,7 @@ const fieldConfig: IFieldConfig = {
   validators: [
     ProfileFieldsValidator.validateFullNameSpace,
     ProfileFieldsValidator.validateFullNamePartialsLength,
+    ProfileFieldsValidator.validateFullNameIdentity,
   ],
 };
 

@@ -43,9 +43,9 @@ export type TFormFieldStruct<Value> = {
   [EEasyFormField.FormErrors]?: string[] | null;
 };
 
-export type TValidator = (value: any) => string | null;
+export type TValidator = (value: any, state?: any) => string | null;
 
-export type TFormValidator = (values: { [P in TPseudoAnyEnum]?: any }) => string[] | null;
+export type TFormValidator = (values: { [P in TPseudoAnyEnum]?: any }, state?: any) => string[] | null;
 
 export type TUseFieldSubscription<V> = {
   clear: () => void;

@@ -11,7 +11,7 @@
 ## Installation
 `npm i react-redux-easy-form --save`
 
-You need `react`, `redux`, `react-redux` also to be installed.
+You need `react`, `redux`, `react-redux`, `reselect` also to be installed.
 
 ## Configuring redux-store
 

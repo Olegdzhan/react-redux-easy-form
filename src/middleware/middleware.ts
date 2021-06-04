@@ -66,7 +66,7 @@ export const easyFormMiddleware = <S extends { forms: TForms }>
           throw new Error(`Seems you try to validate field ${fieldName} of form ${formName}, but have not set the validator function for the field`);
         }
         const nextFieldErrors: string[] = fieldsValidators[fieldName].map(
-          (validator: TValidator) => validator(currentFieldValue)
+          (validator: TValidator) => validator(currentFieldValue, state)
         ).filter((val: ReturnType<TValidator>): val is string => Boolean(val));
 
         const fieldErrors = createGetFormFieldErrors(formName, fieldName)(state);
@@ -90,7 +90,7 @@ export const easyFormMiddleware = <S extends { forms: TForms }>
         }
 
         if (formValidator) {
-          const errors = formValidator(values);
+          const errors = formValidator(values, state);
           next(setFormErrors(formName, errors));
         }
 

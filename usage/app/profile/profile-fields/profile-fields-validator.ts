@@ -1,3 +1,5 @@
+import { TAppState } from '../../app-types';
+
 export class ProfileFieldsValidator {
   static validateMaxAge(value: string): string | null {
     return Number(value) > 99 ? 'Must be less than 99' : null;
@@ -22,6 +24,14 @@ export class ProfileFieldsValidator {
       if (!part || part.length < 2) {
         return message;
       }
+    }
+    return null;
+  }
+
+  static validateFullNameIdentity(value: string, state: TAppState): string | null {
+    const trimmed = value.trim();
+    if (trimmed === state.response.fullName) {
+      return 'Must not be equal to initial full name';
     }
     return null;
   }
