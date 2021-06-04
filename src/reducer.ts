@@ -10,7 +10,7 @@ const setEasyFormValue = <S>(
   value: any,
 ) => {
   // @ts-ignore
-  const newForm = formState[formName] ? { ...formState[formName] } : {};
+  const newForm = formState[formName] ?? {};
   return {
     ...formState,
     [formName]: {

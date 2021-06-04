@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { initiateForm } from '../action-creators';
 import { FormContext } from '../form-context';
@@ -14,7 +14,7 @@ interface IFormProps {
   validate?: TFormValidator;
 }
 
-export const Form = React.memo<IFormProps>(({
+export const Form = memo<IFormProps>(({
   children,
   className,
   initialValues= {},
@@ -24,13 +24,16 @@ export const Form = React.memo<IFormProps>(({
 }) => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    dispatch(initiateForm(name, initialValues));
+  useEffect(() => {
     if (validate) {
       const rootValidator = new RootValidator(name);
       rootValidator.applyFormValidator(validate);
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(initiateForm(name, initialValues));
+  }, [initialValues]);
 
   return (
     <form
