@@ -13,6 +13,7 @@ const fieldConfig: IFieldConfig = {
 
 export const AgeField = memo(() => {
   const {
+    clear,
     errors,
     onChange,
     value,
@@ -27,12 +28,15 @@ export const AgeField = memo(() => {
         name={EProfileFieldName.Age}
         onChange={onChange}
         type="number"
-        value={value}
+        value={value ?? ''}
       />
+      <button type="button" onClick={clear}>
+        Clear Field
+      </button>
       {errors && (
         <ul>
           {errors.map((err: string) => (
-            <li style={{ color: 'red' }}>{err}</li>
+            <li key={atob(err)} style={{ color: 'red' }}>{err}</li>
           ))}
         </ul>
       )}

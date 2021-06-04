@@ -4,6 +4,7 @@ import { FormContext } from '../form-context';
 import {
   changeValue,
   changeValueAndValidate,
+  clearValue,
   validateField,
 } from '../middleware/middleware-actions';
 import { RootValidator } from '../root-validator';
@@ -39,6 +40,10 @@ component, or did not set a formName to Form you provide.`);
 
   const dispatch = useDispatch();
 
+  const clear = useCallback((): void => {
+    dispatch(clearValue(formName, fieldName));
+  }, [dispatch, fieldName, formName]);
+
   const onChange = useCallback((inputData: any): void => {
     const change = validateOnChange ? changeValueAndValidate : changeValue;
     const nextValue = changeValueGetter ? changeValueGetter(inputData) : inputData;
@@ -50,6 +55,7 @@ component, or did not set a formName to Form you provide.`);
   }, [dispatch, fieldName, formName]);
 
   return {
+    clear,
     errors,
     isFieldValid,
     isPristine,

@@ -42,8 +42,12 @@ export const easyFormMiddleware = <S extends { forms: TForms }>
 
       case EEasyFormLogicActionType.ClearValue: {
         const { formName, fieldName } = action.payload;
+        const fieldIsPristine = createGetIsFormFieldPristine(formName, fieldName)(state);
+        if (fieldIsPristine) {
+          next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
+        }
         next(clearFieldValue(formName, fieldName));
-        return next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
+        return store.dispatch(validateField(formName, fieldName));
       }
 
       case EEasyFormLogicActionType.ChangeValueAndValidate: {

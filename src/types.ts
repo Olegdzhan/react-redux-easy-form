@@ -48,6 +48,7 @@ export type TValidator = (value: any) => string | null;
 export type TFormValidator = (values: { [P in TPseudoAnyEnum]?: any }) => string[] | null;
 
 export type TUseFieldSubscription<V> = {
+  clear: () => void;
   errors: string[] | null | undefined;
   isFieldValid: boolean;
   isPristine: boolean;

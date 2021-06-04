@@ -1,3 +1,13 @@
+# v1.x
+## v1.0.0
+### Full update of the library: 
+- previous versions are totally deprecated
+- extremely fast performance
+- react-hooks approach
+- amount of subscriptions within components were reduced to minimum
+- easier to configure
+- fully written with TypeScript
+
 # v0.x
 ## v0.9.0
 add to export internal action creators

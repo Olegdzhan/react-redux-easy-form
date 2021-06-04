@@ -29,12 +29,12 @@ export const FullNameField = memo(() => {
         onBlur={validate}
         onChange={onChange}
         type="text"
-        value={value}
+        value={value ?? ''}
       />
       {errors && (
         <ul>
           {errors.map((err: string) => (
-            <li style={{ color: 'red' }}>{err}</li>
+            <li key={atob(err)} style={{ color: 'red' }}>{err}</li>
           ))}
         </ul>
       )}
