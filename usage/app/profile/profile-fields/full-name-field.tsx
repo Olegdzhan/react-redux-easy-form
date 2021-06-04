@@ -5,28 +5,30 @@ import { ProfileFieldsValidator } from './profile-fields-validator';
 
 const fieldConfig: IFieldConfig = {
   changeValueGetter: (event: any): string => event.target.value,
-  validateOnChange: true,
   validators: [
-    ProfileFieldsValidator.validateMaxAge,
+    ProfileFieldsValidator.validateFullNameSpace,
+    ProfileFieldsValidator.validateFullNamePartialsLength,
   ],
 };
 
-export const AgeField = memo(() => {
+export const FullNameField = memo(() => {
   const {
     errors,
     onChange,
+    validate,
     value,
-  } = useField<string>(EProfileFieldName.Age, fieldConfig);
+  } = useField<string>(EProfileFieldName.FullName, fieldConfig);
 
   return (
     <div>
-      <label htmlFor={EProfileFieldName.Age}>
-        Age (years)
+      <label htmlFor={EProfileFieldName.FullName}>
+        Full name
       </label>
       <input
-        name={EProfileFieldName.Age}
+        name={EProfileFieldName.FullName}
+        onBlur={validate}
         onChange={onChange}
-        type="number"
+        type="text"
         value={value}
       />
       {errors && (

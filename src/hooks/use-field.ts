@@ -39,9 +39,9 @@ component, or did not set a formName to Form you provide.`);
 
   const dispatch = useDispatch();
 
-  const onChange = useCallback((value: any): void => {
+  const onChange = useCallback((inputData: any): void => {
     const change = validateOnChange ? changeValueAndValidate : changeValue;
-    const nextValue = changeValueGetter ? changeValueGetter(value) : value;
+    const nextValue = changeValueGetter ? changeValueGetter(inputData) : inputData;
     dispatch(change(formName, fieldName, nextValue));
   }, [changeValueGetter, dispatch, fieldName, formName, validateOnChange]);
 

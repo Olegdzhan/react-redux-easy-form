@@ -5,7 +5,6 @@ import {
   TEasyFormErrors,
   TEasyFormFieldErrors,
   TEasyFormStatuses,
-  TFormFieldStruct,
   TForms,
   TObjectWithEnumKeys,
   TPseudoAnyEnum,
@@ -183,7 +182,7 @@ export const createGetFormFieldValueForValidation = <R, FormStruct extends TObje
     isPristine: boolean,
     initialValue: R | undefined,
     value: R | undefined,
-  ): R | undefined => (
+  ): R | null => (
     isPristine ? value || initialValue : value
   ),
 );
