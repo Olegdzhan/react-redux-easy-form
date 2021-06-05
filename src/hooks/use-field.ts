@@ -10,7 +10,7 @@ import {
 import { RootValidator } from '../root-validator';
 import {
   createGetFormFieldErrors,
-  createGetFormFieldValueForValidation,
+  createGetFormFieldSafetyValue,
   createGetIsFormFieldPristine,
   createGetIsFormFieldValid
 } from '../selectors';
@@ -33,7 +33,7 @@ component, or did not set a formName to Form you provide.`);
     const rootValidator = new RootValidator(formName);
     rootValidator.applyFieldValidators(fieldName, validators);
   }
-  const value: V | null = useSelector(createGetFormFieldValueForValidation(formName, fieldName)) ?? null;
+  const value: V | null = useSelector(createGetFormFieldSafetyValue(formName, fieldName)) ?? null;
   const errors = useSelector(createGetFormFieldErrors(formName, fieldName));
   const isPristine = useSelector(createGetIsFormFieldPristine(formName, fieldName));
   const isFieldValid = useSelector(createGetIsFormFieldValid(formName, fieldName));

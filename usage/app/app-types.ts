@@ -3,15 +3,19 @@ import { EContactsFieldName } from './contacts';
 import { EProfileFieldName, ESexValue } from './profile';
 import { EFormName } from './app-enums';
 
+export type TProfileForm = {
+  [EProfileFieldName.Age]: number | null | undefined;
+  [EProfileFieldName.FullName]: string | null | undefined;
+  [EProfileFieldName.Sex]: ESexValue | null | undefined;
+};
+
+export type TContactsForm = {
+  [K in EContactsFieldName]: string | null | undefined;
+};
+
 export type TAppForms = {
-  [EFormName.Profile]: {
-    [EProfileFieldName.Age]: number | null;
-    [EProfileFieldName.FullName]: string | null;
-    [EProfileFieldName.Sex]: ESexValue | null;
-  };
-  [EFormName.Contacts]: {
-    [K in EContactsFieldName]: string | null;
-  };
+  [EFormName.Profile]: TProfileForm;
+  [EFormName.Contacts]: TContactsForm;
 };
 
 export type TFormsState = TForms<EFormName, TAppForms>;
@@ -23,4 +27,9 @@ export type TResponseState = {
 export type TAppState = {
   forms: TFormsState;
   response: TResponseState;
+};
+
+export type TOption = {
+  label: string;
+  value: string;
 };

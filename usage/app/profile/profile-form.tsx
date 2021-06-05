@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form } from '@/src';
+import { Form, validateAll } from '@/src';
 import { EFormName } from '../app-enums';
 import { TAppState } from '../app-types';
 import { EProfileFieldName } from './profile-enums';
-import { AgeField, FullNameField } from './profile-fields';
+import { AgeField, FullNameField, GenderField } from './profile-fields';
+import { profileFormValidator } from './profile-form-validator';
 
 export const ProfileForm = memo(() => {
   const dispatch = useDispatch();
@@ -19,17 +20,26 @@ export const ProfileForm = memo(() => {
     new Promise((resolve) => {
       setTimeout(() => {
         resolve('Oleg Mukhov');
-      }, 5000);
+      }, 300);
     }).then((fullName: string) => dispatch({ type: 'SET_RESPONSE', payload: fullName }));
-  }, [])
+  }, []);
+
+  const onSubmit = useCallback((event) => {
+    event.preventDefault();
+    dispatch(validateAll(EFormName.Profile));
+  }, []);
 
   return (
     <Form
       initialValues={initialValues}
       name={EFormName.Profile}
+      onSubmit={onSubmit}
+      validate={profileFormValidator}
     >
       <AgeField />
       <FullNameField />
+      <GenderField />
+      <button type="submit">Validate</button>
     </Form>
   );
 });

@@ -35,7 +35,7 @@ export const FullNameField = memo(() => {
       {errors && (
         <ul>
           {errors.map((err: string) => (
-            <li key={atob(err)} style={{ color: 'red' }}>{err}</li>
+            <li key={err} style={{ color: 'red' }}>{err}</li>
           ))}
         </ul>
       )}

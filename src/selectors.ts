@@ -171,7 +171,7 @@ export const createGetIsFormFieldPristine = <FormStruct extends TObjectWithEnumK
   ): boolean => !fieldStatus || fieldStatus === EEasyFormFieldStatus.Pristine,
 );
 
-export const createGetFormFieldValueForValidation = <R, FormStruct extends TObjectWithEnumKeys>(
+export const createGetFormFieldSafetyValue = <R, FormStruct extends TObjectWithEnumKeys>(
   formName: TPseudoAnyEnum,
   fieldName: TPseudoAnyEnum,
 ) => createSelector(
@@ -187,7 +187,7 @@ export const createGetFormFieldValueForValidation = <R, FormStruct extends TObje
   ),
 );
 
-export const createGetFormValuesForValidation = <FormStruct extends TObjectWithEnumKeys>(
+export const createGetFormSafetyValues = <FormStruct extends TObjectWithEnumKeys>(
   formName: TPseudoAnyEnum,
 ) => createSelector(
   createGetFormStatuses<FormStruct>(formName),

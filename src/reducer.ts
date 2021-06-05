@@ -16,7 +16,7 @@ const setEasyFormValue = <S>(
     [formName]: {
       ...newForm,
       [categoryName]: {
-        ...(newForm[categoryName] ? { ...newForm[categoryName] } : {}),
+        ...(newForm[categoryName] ? newForm[categoryName] : {}),
         [fieldName]: value,
       },
     },

@@ -11,8 +11,8 @@ import { EEasyFormFieldStatus } from '../enums';
 import { RootValidator } from '../root-validator';
 import {
   createGetFormFieldErrors,
-  createGetFormFieldValueForValidation,
-  createGetFormValuesForValidation,
+  createGetFormFieldSafetyValue,
+  createGetFormSafetyValues,
   createGetIsFormFieldPristine,
   getForms,
 } from '../selectors';
@@ -58,7 +58,7 @@ export const easyFormMiddleware = <S extends { forms: TForms }>
 
       case EEasyFormLogicActionType.ValidateField: {
         const { formName, fieldName } = action.payload;
-        const currentFieldValue: any = createGetFormFieldValueForValidation(formName, fieldName)(state);
+        const currentFieldValue: any = createGetFormFieldSafetyValue(formName, fieldName)(state);
 
         const rootValidator = new RootValidator(formName);
         const fieldsValidators = rootValidator.validators[1];
@@ -83,7 +83,7 @@ export const easyFormMiddleware = <S extends { forms: TForms }>
         const { formName } = action.payload;
         const rootValidator = new RootValidator(formName);
         const [formValidator, fieldsValidators] = rootValidator.validators;
-        const values = createGetFormValuesForValidation(formName);
+        const values = createGetFormSafetyValues(formName)(state);
 
         if (!values) {
           return next(action);
