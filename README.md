@@ -133,3 +133,21 @@ A callback, changing value of an input in redux store.
 A callback, triggering the validation process of the field. For example, you can put it in onFocus, or onBlur props of your input.
 ##### value -
 Current value of the field in forms state of redux store.
+
+## Action-Creators
+### Action-Creators starting the middleware
+#### changeValue
+`changeValue(formName: string, fieldName: string, value: any): void`
+Starts a middleware changing form field value. Field status becomes __dirty__.
+#### changeValueAndValidate
+`changeValueAndValidate(formName: string, fieldName: string, value: any): void`
+Starts a middleware changing form field value and immediately calls the validator on it.
+#### clearValue
+`clearValue(formName: string, fieldName: string): void`
+Starts a middleware clearing the field value. Status becomes __dirty__.
+#### validateAll
+`validateAll(formName: string): void`
+Starts a middleware launching all validators in the form.
+#### validateField
+`validateField(formName: string, fieldName: string): void`
+Starts a middleware launching all validators for the field.

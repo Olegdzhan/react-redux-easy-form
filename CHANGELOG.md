@@ -7,6 +7,51 @@
 - amount of subscriptions within components were reduced to minimum
 - easier to configure
 - fully written with TypeScript
+#### Reducer
+- easyFormReducer
+#### Redux-Middleware
+- easyFormMiddleware
+#### Enums
+- EEasyFormFieldStatus,
+- EEasyFormField,
+#### Components
+- Form
+#### Hooks
+- useField
+#### Action-Creators starting the middleware
+- changeValue,
+- changeValueAndValidate,
+- clearValue,
+- validateAll,
+- validateField,
+#### Action-Creators (flat)
+- clearFieldErrors,
+- clearFieldValue,
+- dropForm,
+- initiateForm,
+- setFieldErrors,
+- setFieldStatus,
+- setFieldValue,
+- setFormErrors,
+#### Selectors and Selector-Creators
+- getForms,
+- createGetForm,
+- createGetCommonFormErrors,
+- createGetFormAllFieldsErrors,
+- createGetFormErrors,
+- createGetIsFormValid,
+- createGetFormFieldErrors,
+- createGetIsFormFieldValid,
+- createGetFormValues,
+- createGetFormInitialValues,
+- createGetFormFieldValue,
+- createGetFormFieldInitialValue,
+- createGetFormSafetyValues,
+- createGetFormFieldSafetyValue,
+- createGetFormStatuses,
+- createGetIsFormPristine,
+- createGetFormFieldStatus,
+- createGetIsFormFieldPristine,
 
 # v0.x
 ## v0.9.0
