@@ -247,7 +247,7 @@ Returns the form field status (from statuses state branch)
 #### createGetIsFormFieldPristine
 `createGetIsFormFieldPristine(formName: string, fieldName: string): Selector`
 
-Returns a boolean flag, whether the the form field is pristine
+Returns a boolean flag, whether the form field is pristine
 #### createGetFormFieldSafetyValue
 `createGetFormFieldSafetyValue(formName: string, fieldName: string): Selector`
 

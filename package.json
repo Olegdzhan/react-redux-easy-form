@@ -14,6 +14,8 @@
     "url": "git+https://github.com/Olegdzhan/react-redux-easy-form.git"
   },
   "keywords": [
+    "easy-form",
+    "react-redux-easy-form",
     "react-redux-form",
     "react-form",
     "redux-form",
@@ -69,8 +71,11 @@
     "@src": "./src"
   },
   "files": [
-    "README.md",
     "CHANGELOG.md",
-    "lib"
+    "lib/types/src",
+    "lib/index.js",
+    "lib/index.js.LICENSE.txt",
+    "package.json",
+    "README.md"
   ]
 }
