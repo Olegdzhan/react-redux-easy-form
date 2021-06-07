@@ -70,7 +70,7 @@ const fieldConfig: IFieldConfig = {
   changeValueGetter: (event) => event.target.value,
   validateOnChange: true,
   validators: [
-     (value: string): string | null => Number(value) > 99 ? 'Must be less than 100' : null,
+     (value) => Number(value) > 99 ? 'Must be less than 100' : null,
   ],
 };
 ```
@@ -119,35 +119,141 @@ const AgeField = memo(() => {
 `useField` hook returns an object of type `TUseFieldSubscription`.
 
 #### TUseFieldSubscription
-##### clear -
-A callback, clearing the field value in redux-store.
-##### errors -
-An array of field errors, provided after the validators called.
-##### isFieldValid -
-A boolean value defines that field validation completed with no errors.
-##### isPristine -
-A boolean value shows that field has had no changes.
-##### onChange -
-A callback, changing value of an input in redux store.
-##### validate -
-A callback, triggering the validation process of the field. For example, you can put it in onFocus, or onBlur props of your input.
-##### value -
-Current value of the field in forms state of redux store.
+| Name | Type | Description |
+| --- | --- | --- |
+| `clear` | `() => void` | A callback, clearing the field value in redux-store |
+| `errors` | `string[]`, `null` | An array of field errors, provided after the validators called |
+| `isFieldValid` | `boolean` | A boolean value defines that field validation completed with no errors |
+| `isPristine` | `boolean` | A boolean value shows that field has had no changes |
+| `onChange` | `(...callbackArgs: any[]) => void` | A callback, changing value of an input in redux store |
+| `validate` | `() => void` | A callback, triggering the validation process of the field. For example, you can put it in onFocus, or onBlur props of your input |
+| `value` | `any` | Current value of the field in forms state of redux store |
 
 ## Action-Creators
 ### Action-Creators starting the middleware
 #### changeValue
-`changeValue(formName: string, fieldName: string, value: any): void`
+`changeValue(formName: string, fieldName: string, value: any): Action`
+
 Starts a middleware changing form field value. Field status becomes __dirty__.
 #### changeValueAndValidate
-`changeValueAndValidate(formName: string, fieldName: string, value: any): void`
+`changeValueAndValidate(formName: string, fieldName: string, value: any): Action`
+
 Starts a middleware changing form field value and immediately calls the validator on it.
 #### clearValue
-`clearValue(formName: string, fieldName: string): void`
+`clearValue(formName: string, fieldName: string): Action`
+
 Starts a middleware clearing the field value. Status becomes __dirty__.
 #### validateAll
-`validateAll(formName: string): void`
+`validateAll(formName: string): Action`
+
 Starts a middleware launching all validators in the form.
 #### validateField
-`validateField(formName: string, fieldName: string): void`
+`validateField(formName: string, fieldName: string): Action`
+
 Starts a middleware launching all validators for the field.
+
+### Flat Action-Creators
+#### clearFieldErrors
+`clearFieldErrors(formName: string, fieldName: string): Action`
+
+Sets the field errors to null
+#### clearFieldValue
+`clearFieldValue(formName: string, fieldName: string): Action`
+
+Sets the form field value to null
+#### initiateForm
+`initiateForm(formName: string, initialValues: object): Action`
+
+#### setFieldErrors
+`setFieldErrors(formName: string, fieldName: string, errors: string[] | null): Action`
+
+Sets the field validation errors
+#### setFieldStatus
+`setFieldStatus(formName: string, fieldName: string, status: EEasyFormFieldStatus): Action`
+
+Sets the field status
+#### setFieldValue
+`setFieldValue(formName: string, fieldName: string, value: any): Action`
+
+Sets the value into the form field
+#### setFormErrors
+`setFormErrors(formName: string, errors: string[] | null): Action`
+
+Sets the form errors
+#### dropForm
+`dropForm(formName: string): Action`
+
+Clears all __values__, keeps all __initials__, and sets all statuses to __pristine__
+
+## Selectors
+### getForms
+Returns forms state branch
+#### createGetForm
+`createGetForm(formName: string): Selector`
+
+Returns the form state by the form name
+#### createGetCommonFormErrors
+`createGetCommonFormErrors(formName: string): Selector`
+
+Returns the form errors (only common errors, except fields errors)
+#### createGetFormAllFieldsErrors
+`createGetFormAllFieldsErrors(formName: string): Selector`
+
+Returns the form fields errors (common form errors not included)
+#### createGetFormErrors
+`createGetFormErrors(formName: string): Selector`
+
+Returns all of the form validation errors
+#### createGetIsFormValid
+`createGetIsFormValid(formName: string): Selector`
+
+Returns a boolean flag, whether the form is valid
+#### createGetFormValues
+`createGetFormValues(formName: string): Selector`
+
+Returns values state branch of the form
+#### createGetFormInitialValues
+`createGetFormInitialValues(formState: string): Selector`
+
+Returns initials state branch of the form
+#### createGetFormStatuses
+`createGetFormStatuses(formName: string): Selector`
+
+Returns statuses state branch of the form
+#### createGetIsFormPristine
+`createGetIsFormPristine(formName: string): Selector`
+
+Returns a boolean flag, whether all of the form fields are in pristine status
+#### createGetFormFieldValue
+`createGetFormFieldValue(formName: string, fieldName: string): Selector`
+
+Returns the form field value (from values state branch)
+#### createGetFormFieldInitialValue
+`createGetFormFieldInitialValue(formName: string, fieldName: string): Selector`
+
+Returns the form field initial value (from initials state branch)
+#### createGetFormFieldErrors
+`createGetFormFieldErrors(formName: string, fieldName: string): Selector`
+
+Returns the form field errors (from errors state branch)
+#### createGetIsFormFieldValid
+`createGetIsFormFieldValid(formName: string, fieldName: string): Selector`
+
+Returns a boolean flag of the validation result of the form field
+#### createGetFormFieldStatus
+`createGetFormFieldStatus(formName: string, fieldName: string): Selector`
+
+Returns the form field status (from statuses state branch)
+#### createGetIsFormFieldPristine
+`createGetIsFormFieldPristine(formName: string, fieldName: string): Selector`
+
+Returns a boolean flag, whether the the form field is pristine
+#### createGetFormFieldSafetyValue
+`createGetFormFieldSafetyValue(formName: string, fieldName: string): Selector`
+
+Returns a calculated current value of the form field. The Calculation includes the set value, the initial value and the field status.
+
+#### createGetFormSafetyValues
+`createGetFormSafetyValues(formName: string): Selector`
+
+An analogue of createGetFormFieldSafetyValue selector-creator, but returns all of the values of the form 
