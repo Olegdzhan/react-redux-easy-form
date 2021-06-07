@@ -76,12 +76,12 @@ const fieldConfig: IFieldConfig = {
 ```
 
 #### IFieldConfig
-##### changeValueGetter -
-A callback, that calls in onChange callback-prop, and transforms input argument into output result to set.
-##### validateOnChange -
-A boolean flag, which decides to call fieldValidator on each onChange call to immediately receive validation result.
-##### validators -
-An array of TValidator functions, that validates the field separately. Each validation result will be set as separate element of output array.
+
+| Option Name | Option Type | Description |
+| --- | --- | --- |
+| `changeValueGetter` | `(event:any)=>any` | A callback, that calls in onChange callback-prop, and transforms input argument into output result to set |
+| `validateOnChange` | `boolean` | A boolean flag, which decides to call fieldValidator on each onChange call to immediately receive validation result |
+| `validators` | `TValidator[]` | An array of TValidator functions, that validates the field separately. Each validation result will be set as separate element of output array |
 
 ### Call useField Hook Within Your Component
 ```javascript
