@@ -16,13 +16,13 @@ import {
   createGetIsFormFieldPristine,
   getForms,
 } from '../selectors';
-import { TForms, TValidator } from '../types';
+import { TShape, TValidator } from '../types';
 import { changeValue, validateField } from './middleware-actions';
 import { EEasyFormLogicActionType } from './middleware-enums';
 
-export const easyFormMiddleware = <S extends { forms: TForms }>
-  (store: Store<S>) => (next: Dispatch) => (action: AnyAction) => {
-    const state: S = store.getState();
+export const easyFormMiddleware =
+  (store: any) => (next: Dispatch) => (action: AnyAction) => {
+    const state: TShape = store.getState();
     const formsState = getForms(state);
     if (!formsState) {
       throw new Error(

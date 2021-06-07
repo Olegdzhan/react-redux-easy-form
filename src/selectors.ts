@@ -5,65 +5,47 @@ import {
   TEasyFormErrors,
   TEasyFormFieldErrors,
   TEasyFormStatuses,
-  TForms,
-  TObjectWithEnumKeys,
-  TPseudoAnyEnum,
+  TShape,
 } from './types';
 
-export const getForms = <
-  Forms extends TForms,
-  State extends { forms: Forms }
->(state: State): Forms => state.forms;
+export const getForms = <R = any>(state: any): R => state.forms;
 
-export const createGetForm = <
-  FormStruct,
-  Forms extends { [FormName in TPseudoAnyEnum]: TEasyForm<FormStruct> } = {}
->(
-  formName: TPseudoAnyEnum,
-) => createSelector(
+export const createGetForm = <R = any>(formName: string) => createSelector(
   getForms,
-  (forms: Forms): TEasyForm<FormStruct> | undefined => forms?.[formName],
+  (forms: TShape): R | undefined => forms?.[formName],
 );
 
-export const createGetCommonFormErrors = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (form: TEasyForm<FormStruct> | undefined): string[] | null | undefined => form?.[EEasyFormField.FormErrors],
+export const createGetCommonFormErrors = (formName: string) => createSelector(
+  createGetForm(formName),
+  (form: TEasyForm | undefined): string[] | null | undefined => form?.[EEasyFormField.FormErrors],
 );
 
-export const createGetFormAllFieldsErrors = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (
-    form: TEasyForm<FormStruct> | undefined,
-  ): TEasyFormFieldErrors<FormStruct> | undefined => form?.[EEasyFormField.FieldErrors],
+export const createGetFormAllFieldsErrors = (formName: string) => createSelector(
+  createGetForm(formName),
+  (form: TEasyForm | undefined): TEasyFormFieldErrors | undefined => form?.[EEasyFormField.FieldErrors],
 );
 
-export const createGetFormErrors = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
+export const createGetFormErrors = (
+  formName: string,
 ) => createSelector(
-  createGetCommonFormErrors<FormStruct>(formName),
-  createGetFormAllFieldsErrors<FormStruct>(formName),
+  createGetCommonFormErrors(formName),
+  createGetFormAllFieldsErrors(formName),
   (
     formErrors: string[] | null | undefined,
-    fieldErrors: TEasyFormFieldErrors<FormStruct> | undefined,
+    fieldErrors: TEasyFormFieldErrors | undefined,
   ): TEasyFormErrors | undefined => {
     if (!fieldErrors && !formErrors) {
       return;
     }
     return {
-      ...(fieldErrors ?? <TEasyFormFieldErrors<FormStruct>>{}),
+      ...(fieldErrors ?? <TEasyFormFieldErrors>{}),
       [EEasyFormField.FormErrors]: formErrors,
     };
   },
 );
 
-export const createGetIsFormValid = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetFormErrors<FormStruct>(formName),
+export const createGetIsFormValid = (formName: string) => createSelector(
+  createGetFormErrors(formName),
   (formErrors: TEasyFormErrors | undefined): boolean => {
     if (!formErrors) {
       return true;
@@ -77,34 +59,26 @@ export const createGetIsFormValid = <FormStruct extends TObjectWithEnumKeys>(
   },
 );
 
-export const createGetFormValues = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (form: TEasyForm<FormStruct> | undefined): Partial<FormStruct> | undefined => form?.[EEasyFormField.Values],
+export const createGetFormValues = (formName: string) => createSelector(
+  createGetForm(formName),
+  (form: TEasyForm | undefined): any => form?.[EEasyFormField.Values],
 );
 
-export const createGetFormInitialValues = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
+export const createGetFormInitialValues = (
+  formName: string,
 ) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (form: TEasyForm<FormStruct> | undefined): Partial<FormStruct> | undefined => form?.[EEasyFormField.Initials],
+  createGetForm(formName),
+  (form: TEasyForm | undefined): any => form?.[EEasyFormField.Initials],
 );
 
-export const createGetFormStatuses = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetForm<FormStruct>(formName),
-  (
-    form: TEasyForm<FormStruct> | undefined,
-  ): TEasyFormStatuses<FormStruct> | undefined => form?.[EEasyFormField.Statuses],
+export const createGetFormStatuses = (formName: string) => createSelector(
+  createGetForm(formName),
+  (form: TEasyForm | undefined): TEasyFormStatuses | undefined => form?.[EEasyFormField.Statuses],
 );
 
-export const createGetIsFormPristine = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetFormStatuses<FormStruct>(formName),
-  (formStatuses: TEasyFormStatuses<FormStruct> | undefined): boolean => {
+export const createGetIsFormPristine = (formName: string) => createSelector(
+  createGetFormStatuses(formName),
+  (formStatuses: TEasyFormStatuses | undefined): boolean => {
     if (!formStatuses) {
       return true;
     }
@@ -117,93 +91,89 @@ export const createGetIsFormPristine = <FormStruct extends TObjectWithEnumKeys>(
   },
 );
 
-export const createGetFormFieldValue = <R, FormStruct extends TObjectWithEnumKeys = TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetFormFieldValue = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormValues<FormStruct>(formName),
-  (formValues: Partial<FormStruct> | undefined): R | undefined => formValues?.[fieldName],
+  createGetFormValues(formName),
+  (formValues: TShape | undefined): any => formValues?.[fieldName],
 );
 
-export const createGetFormFieldInitialValue = <R, FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetFormFieldInitialValue = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormInitialValues<FormStruct>(formName),
-  (formInitialValues: Partial<FormStruct> | undefined): R | undefined => formInitialValues?.[fieldName],
+  createGetFormInitialValues(formName),
+  (formInitialValues: TShape | undefined): any => formInitialValues?.[fieldName],
 );
 
-export const createGetFormFieldErrors = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetFormFieldErrors = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormAllFieldsErrors<FormStruct>(formName),
-  (
-    allFormFieldsErrors: TEasyFormFieldErrors<FormStruct> | undefined,
-  ): string[] | null | undefined => allFormFieldsErrors?.[fieldName],
+  createGetFormAllFieldsErrors(formName),
+  (allFormFieldsErrors: TEasyFormFieldErrors | undefined): string[] | null | undefined => (
+    allFormFieldsErrors?.[fieldName]
+  ),
 );
 
-export const createGetIsFormFieldValid = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetIsFormFieldValid = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormFieldErrors<FormStruct>(formName, fieldName),
+  createGetFormFieldErrors(formName, fieldName),
   (formFieldErrors: string[] | null | undefined): boolean => !formFieldErrors,
 );
 
-export const createGetFormFieldStatus = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetFormFieldStatus = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormStatuses<FormStruct>(formName),
-  (
-    formStatuses: TEasyFormStatuses<FormStruct> | undefined,
-  ): EEasyFormFieldStatus | undefined => formStatuses?.[fieldName],
+  createGetFormStatuses(formName),
+  (formStatuses: TEasyFormStatuses | undefined): EEasyFormFieldStatus | undefined => formStatuses?.[fieldName],
 );
 
-export const createGetIsFormFieldPristine = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetIsFormFieldPristine = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetFormFieldStatus<FormStruct>(formName, fieldName),
-  (
-    fieldStatus: EEasyFormFieldStatus | undefined,
-  ): boolean => !fieldStatus || fieldStatus === EEasyFormFieldStatus.Pristine,
+  createGetFormFieldStatus(formName, fieldName),
+  (fieldStatus: EEasyFormFieldStatus | undefined): boolean => (
+    !fieldStatus || fieldStatus === EEasyFormFieldStatus.Pristine
+  ),
 );
 
-export const createGetFormFieldSafetyValue = <R, FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+export const createGetFormFieldSafetyValue = (
+  formName: string,
+  fieldName: string,
 ) => createSelector(
-  createGetIsFormFieldPristine<FormStruct>(formName, fieldName),
-  createGetFormFieldInitialValue<R, FormStruct>(formName, fieldName),
-  createGetFormFieldValue<R, FormStruct>(formName, fieldName),
+  createGetIsFormFieldPristine(formName, fieldName),
+  createGetFormFieldInitialValue(formName, fieldName),
+  createGetFormFieldValue(formName, fieldName),
   (
     isPristine: boolean,
-    initialValue: R | undefined,
-    value: R | undefined,
-  ): R | null => (
+    initialValue: any,
+    value: any,
+  ): any => (
     isPristine ? value || initialValue : value
   ),
 );
 
-export const createGetFormSafetyValues = <FormStruct extends TObjectWithEnumKeys>(
-  formName: TPseudoAnyEnum,
-) => createSelector(
-  createGetFormStatuses<FormStruct>(formName),
-  createGetFormInitialValues<FormStruct>(formName),
-  createGetFormValues<FormStruct>(formName),
+export const createGetFormSafetyValues = (formName: string) => createSelector(
+  createGetFormStatuses(formName),
+  createGetFormInitialValues(formName),
+  createGetFormValues(formName),
   (
-    formStatuses: TEasyFormStatuses<FormStruct> | undefined,
-    formInitials: Partial<FormStruct> | undefined,
-    formValues: Partial<FormStruct> | undefined,
-  ): Partial<FormStruct> | undefined => {
+    formStatuses: TEasyFormStatuses | undefined,
+    formInitials: TShape | undefined,
+    formValues: TShape | undefined,
+  ): TShape | undefined => {
     if (!formStatuses || !formInitials || !formValues) {
       return;
     }
 
-    const result: Partial<FormStruct> = {};
-    const setResultKeyValue = (key: keyof FormStruct) => {
+    const result: TShape = {};
+    const setResultKeyValue = (key: string) => {
       result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine
         ? formValues[key] || formInitials[key]
         : formValues[key];

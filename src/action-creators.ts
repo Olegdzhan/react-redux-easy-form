@@ -1,9 +1,9 @@
 import { EEasyFormActionType, EEasyFormFieldStatus } from './enums';
-import { TPseudoAnyEnum } from './types';
+import { TShape } from './types';
 
 export const setFieldValue = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
   value: any,
 ) => ({
   type: EEasyFormActionType.SetFieldValue,
@@ -11,16 +11,16 @@ export const setFieldValue = (
 } as const);
 
 export const clearFieldValue = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
 ) => ({
   type: EEasyFormActionType.ClearFieldValue,
   payload: { formName, fieldName },
 } as const);
 
 export const setFieldErrors = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
   errors: string[] | null | undefined,
 ) => ({
   type: EEasyFormActionType.SetFieldErrors,
@@ -28,24 +28,24 @@ export const setFieldErrors = (
 } as const);
 
 export const clearFieldErrors = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
 ) => ({
   type: EEasyFormActionType.ClearFieldErrors,
   payload: { formName, fieldName },
 } as const);
 
 export const setFieldStatus = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
   status: EEasyFormFieldStatus,
 ) => ({
   type: EEasyFormActionType.SetFieldStatus,
   payload: { formName, fieldName, status },
 } as const);
 
-export const initiateForm = <T extends { [P in TPseudoAnyEnum]: any }>(
-  formName: TPseudoAnyEnum,
+export const initiateForm = <T extends TShape>(
+  formName: string,
   initialValues: T,
 ) => ({
   type: EEasyFormActionType.InitiateForm,
@@ -53,14 +53,14 @@ export const initiateForm = <T extends { [P in TPseudoAnyEnum]: any }>(
 } as const);
 
 export const setFormErrors = (
-  formName: TPseudoAnyEnum,
+  formName: string,
   errors: string[] | null | undefined,
 ) => ({
   type: EEasyFormActionType.SetFormErrors,
   payload: { formName, errors },
 } as const);
 
-export const dropForm = (formName: TPseudoAnyEnum) => ({
+export const dropForm = (formName: string) => ({
   type: EEasyFormActionType.DropForm,
   payload: { formName },
 } as const);

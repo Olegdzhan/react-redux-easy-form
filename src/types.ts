@@ -1,36 +1,29 @@
 import { EEasyFormFieldStatus, EEasyFormField } from './enums';
 
-export type TPseudoAnyEnum = string | number;
+export type TShape = { [k: string]: any };
 
-export type TObjectWithEnumKeys = {
-  [FieldName in TPseudoAnyEnum]?: any;
+export type TEasyFormStatuses = {
+  [k: string]: EEasyFormFieldStatus;
 };
 
-export type TEasyFormStatuses<FormStruct> = {
-  [FieldName in keyof FormStruct]: EEasyFormFieldStatus;
-};
-
-export type TEasyFormFieldErrors<FormStruct> = {
+export type TEasyFormFieldErrors<FormStruct extends TShape = TShape> = {
   [FieldName in keyof FormStruct]?: string[] | null;
 };
 
-export type TEasyForm<FormStruct> = {
+export type TEasyForm<FormStruct extends TShape = TShape> = {
   [EEasyFormField.Values]?: Partial<FormStruct>;
   [EEasyFormField.Initials]?: Partial<FormStruct>;
-  [EEasyFormField.Statuses]?: TEasyFormStatuses<FormStruct>;
+  [EEasyFormField.Statuses]?: TEasyFormStatuses;
   [EEasyFormField.FieldErrors]?: TEasyFormFieldErrors<FormStruct>;
   [EEasyFormField.FormErrors]?: string[] | null;
 };
 
-export type TForms<
-  EnumFormName extends TPseudoAnyEnum = TPseudoAnyEnum,
-  U extends { [FormName in EnumFormName]?: { [k: string]: any } } = {}
-> = {
-  [FormName in EnumFormName]?: TEasyForm<U[FormName]>;
+export type TForms = {
+  [k: string]: TEasyForm;
 };
 
-export type TEasyFormErrors<EnumFormName extends TPseudoAnyEnum = TPseudoAnyEnum> = {
-  [FormName in EnumFormName]?: string[] | null;
+export type TEasyFormErrors = {
+  [k: string]: string[] | null;
 } & {
   [EEasyFormField.FormErrors]?: string[] | null;
 };
@@ -45,7 +38,7 @@ export type TFormFieldStruct<Value> = {
 
 export type TValidator = (value: any, state?: any) => string | null;
 
-export type TFormValidator = (values: { [P in TPseudoAnyEnum]?: any }, state?: any) => string[] | null;
+export type TFormValidator = (values: any, state?: any) => string[] | null;
 
 export type TUseFieldSubscription<V> = {
   clear: () => void;

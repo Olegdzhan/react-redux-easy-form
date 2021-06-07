@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import { initiateForm } from '../action-creators';
 import { FormContext } from '../form-context';
 import { RootValidator } from '../root-validator';
-import { TFormValidator, TPseudoAnyEnum } from '../types';
+import { TFormValidator, TShape } from '../types';
 
 interface IFormProps {
   children: React.ReactNode;
   className?: string;
-  initialValues?: { [P in TPseudoAnyEnum]: any };
-  name: TPseudoAnyEnum;
+  initialValues?: TShape;
+  name: string;
   onSubmit?: (event: React.SyntheticEvent) => void;
   validate?: TFormValidator;
 }

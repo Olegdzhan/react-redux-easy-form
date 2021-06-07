@@ -1,4 +1,4 @@
-import { TForms } from '@/src';
+import { TShape } from '@/src';
 import { EContactsFieldName } from './contacts';
 import { EProfileFieldName, ESexValue } from './profile';
 import { EFormName } from './app-enums';
@@ -18,14 +18,12 @@ export type TAppForms = {
   [EFormName.Contacts]: TContactsForm;
 };
 
-export type TFormsState = TForms<EFormName, TAppForms>;
-
 export type TResponseState = {
   [k: string]: any;
 };
 
 export type TAppState = {
-  forms: TFormsState;
+  forms: TShape;
   response: TResponseState;
 };
 

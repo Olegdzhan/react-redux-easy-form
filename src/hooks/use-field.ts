@@ -14,10 +14,10 @@ import {
   createGetIsFormFieldPristine,
   createGetIsFormFieldValid
 } from '../selectors';
-import { TPseudoAnyEnum, TUseFieldSubscription, IFieldConfig } from '../types';
+import { TUseFieldSubscription, IFieldConfig } from '../types';
 
 export const useField = <V>(
-  fieldName: TPseudoAnyEnum,
+  fieldName: string,
   {
     changeValueGetter,
     validateOnChange,

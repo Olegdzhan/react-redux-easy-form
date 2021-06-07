@@ -1,9 +1,8 @@
-import { TPseudoAnyEnum, TValidator } from '../types';
 import { EEasyFormLogicActionType } from './middleware-enums';
 
 export const changeValue = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
   value: any,
 ) => ({
   type: EEasyFormLogicActionType.ChangeValue,
@@ -11,16 +10,16 @@ export const changeValue = (
 } as const);
 
 export const clearValue = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
 ) => ({
   type: EEasyFormLogicActionType.ClearValue,
   payload: { formName, fieldName },
 } as const);
 
 export const changeValueAndValidate = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
   value: any,
 ) => ({
   type: EEasyFormLogicActionType.ChangeValueAndValidate,
@@ -28,14 +27,14 @@ export const changeValueAndValidate = (
 } as const);
 
 export const validateField = (
-  formName: TPseudoAnyEnum,
-  fieldName: TPseudoAnyEnum,
+  formName: string,
+  fieldName: string,
 ) => ({
   type: EEasyFormLogicActionType.ValidateField,
   payload: { formName, fieldName },
 } as const);
 
-export const validateAll = (formName: TPseudoAnyEnum) => ({
+export const validateAll = (formName: string) => ({
   type: EEasyFormLogicActionType.ValidateAll,
   payload: { formName },
 } as const);

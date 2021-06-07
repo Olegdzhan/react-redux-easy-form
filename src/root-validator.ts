@@ -1,22 +1,22 @@
-import { TFormValidator, TPseudoAnyEnum, TValidator } from './types';
+import { TFormValidator, TValidator } from './types';
 
 export class RootValidator {
-  private static instances: { [FormName in TPseudoAnyEnum]: RootValidator } = {};
+  private static instances: { [k: string]: RootValidator } = {};
 
   private fieldsValidators: {
-    [P in TPseudoAnyEnum]?: TValidator[];
+    [k: string]: TValidator[];
   } = {};
 
   private formValidator: TFormValidator | undefined;
 
-  constructor(formName: TPseudoAnyEnum) {
+  constructor(formName: string) {
     if (!RootValidator.instances[formName]) {
       RootValidator.instances[formName] = this;
     }
     return RootValidator.instances[formName];
   }
 
-  public applyFieldValidators(fieldName: TPseudoAnyEnum, validators: TValidator[]): void {
+  public applyFieldValidators(fieldName: string, validators: TValidator[]): void {
     this.fieldsValidators[fieldName] = validators;
   }
 
@@ -24,7 +24,7 @@ export class RootValidator {
     this.formValidator = formValidator;
   }
 
-  public get validators(): [TFormValidator | undefined, { [P in TPseudoAnyEnum]?: TValidator[] }] {
+  public get validators(): [TFormValidator | undefined, { [k: string]: TValidator[] }] {
     return [this.formValidator, this.fieldsValidators];
   }
 }

@@ -17,7 +17,7 @@ export const ProfileForm = memo(() => {
   }), [fullName]);
 
   useEffect(() => {
-    new Promise((resolve) => {
+    new Promise<string>((resolve) => {
       setTimeout(() => {
         resolve('Oleg Mukhov');
       }, 300);

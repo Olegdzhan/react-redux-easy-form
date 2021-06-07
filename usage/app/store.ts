@@ -3,7 +3,6 @@ import {
   applyMiddleware,
   createStore,
   combineReducers,
-  Reducer,
   Store,
 } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -22,7 +21,7 @@ const responseReducer = (state = {}, action: AnyAction) => {
   }
 };
 
-const rootReducer: Reducer<Partial<TAppState>> = combineReducers({
+const rootReducer = combineReducers({
   forms: easyFormReducer,
   response: responseReducer,
 });
