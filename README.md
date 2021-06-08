@@ -1,5 +1,8 @@
 # react-redux-easy-form
 
+[![npm version](https://img.shields.io/npm/v/react-redux-easy-form.svg?style=flat-square)](https://www.npmjs.com/package/react-redux-easy-form)
+[![npm downloads](https://img.shields.io/npm/dm/react-redux-easy-form.svg?style=flat-square)](https://www.npmjs.com/package/react-redux-easy-form)
+
 ## Main Concepts:
 1. Form has to perform in redux-middleware layer, not in components.
 2. Total dividing application views and business-logic.
