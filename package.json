@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Form hooks for react applications with ability to configure fields and validate theirs values",
   "main": "lib/src/index.js",
+  "module": "lib/src/index.js",
+  "unpkg": "dist/react-redux-easy-form.js",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "dev": "webpack serve --config webpack/webpack.dev.config.js",
-    "build:prepare": "webpack --config webpack/webpack.prod.config.js",
-    "types:prepare": "tsc",
-    "build": "npm run build:prepare && npm run types:prepare"
+    "build:tsc": "tsc",
+    "build:umd": "webpack --config webpack/webpack.prod.config.js",
+    "build": "npm run build:tsc && npm run build:umd"
   },
   "repository": {
     "type": "git",
@@ -73,9 +75,7 @@
     "@src": "./src"
   },
   "files": [
-    "CHANGELOG.md",
-    "lib/src",
-    "lib/index.js",
-    "lib/index.js.LICENSE.txt"
+    "dist",
+    "lib/src"
   ]
 }

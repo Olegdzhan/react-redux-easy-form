@@ -18,7 +18,7 @@
     },
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
-    "outDir": "lib",
+    "outDir": "./lib",
     "sourceMap": true,
     "target": "es2015",
 
