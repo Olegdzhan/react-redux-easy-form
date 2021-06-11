@@ -1,4 +1,6 @@
 # v1.x
+## v1.0.2
+- Form component props interface updated with full list of `FormHTMLAttributes<HTMLFormElement>` props
 ## v1.0.0
 ### Full update of the library: 
 - previous versions are totally deprecated
