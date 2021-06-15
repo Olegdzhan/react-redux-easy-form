@@ -97,7 +97,7 @@ export const easyFormMiddleware =
         const validationKeys = Object.keys(fieldsValidators);
         if (validationKeys.length) {
           validationKeys.forEach((key) => {
-            next(validateField(formName, key));
+            store.dispatch(validateField(formName, key));
           })
         }
         return next(action);

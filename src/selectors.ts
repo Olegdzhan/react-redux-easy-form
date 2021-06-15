@@ -168,18 +168,22 @@ export const createGetFormSafetyValues = (formName: string) => createSelector(
     formInitials: TShape | undefined,
     formValues: TShape | undefined,
   ): TShape | undefined => {
-    if (!formStatuses || !formInitials || !formValues) {
+    if (!formStatuses || (!formInitials && !formValues)) {
       return;
     }
 
     const result: TShape = {};
-    const setResultKeyValue = (key: string) => {
-      result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine
-        ? formValues[key] || formInitials[key]
-        : formValues[key];
+    const setResultKeyValue = (key: string): void => {
+      result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine || !formStatuses[key]
+        ? formValues?.[key] || formInitials?.[key]
+        : formValues?.[key];
     };
-    Object.keys(formInitials).forEach(setResultKeyValue);
-    Object.keys(formValues).forEach(setResultKeyValue);
+
+    [formInitials, formValues]
+      .filter(Boolean)
+      .forEach((values: TShape): void => {
+        Object.keys(values).forEach(setResultKeyValue);
+      });
     return result;
   },
 );

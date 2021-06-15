@@ -8,6 +8,7 @@ const fieldConfig: IFieldConfig = {
   validateOnChange: true,
   validators: [
     ProfileFieldsValidator.validateMaxAge,
+    ProfileFieldsValidator.validateMinAge,
   ],
 };
 
