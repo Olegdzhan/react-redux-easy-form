@@ -1,4 +1,7 @@
 # v1.x
+## v1.0.3
+- fix `validateAll` action-creator in when calls fields validators
+- fix `createGetFormSafetyValues` selector-creator for pristine values
 ## v1.0.2
 - Form component props interface updated with full list of `FormHTMLAttributes<HTMLFormElement>` props
 ## v1.0.0
