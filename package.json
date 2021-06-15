@@ -1,6 +1,6 @@
 {
   "name": "react-redux-easy-form",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Form hooks for react applications with ability to configure fields and validate theirs values",
   "main": "lib/src/index.js",
   "module": "lib/src/index.js",
