@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React, { ChangeEvent, memo } from 'react';
 import { IFieldConfig, useField } from '@/src';
 import { TOption } from '../../app-types';
 import { GENDER_SELECT_OPTIONS } from '../profile-constants';
 import { EProfileFieldName, ESexValue } from '../profile-enums';
 
 const fieldConfig: IFieldConfig = {
-  changeValueGetter: (event): ESexValue => event.target.value,
+  changeValueGetter: (event: ChangeEvent<HTMLSelectElement>): ESexValue => event.target.value as ESexValue,
 };
 
 export const GenderField = memo(() => {

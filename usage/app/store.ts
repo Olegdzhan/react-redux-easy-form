@@ -1,5 +1,4 @@
 import {
-  AnyAction,
   applyMiddleware,
   createStore,
   combineReducers,
@@ -9,7 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { easyFormMiddleware, easyFormReducer } from '@/src';
 import { TAppState } from './app-types';
 
-const responseReducer = (state = {}, action: AnyAction) => {
+const responseReducer = (state = {}, action: { type: 'SET_RESPONSE', payload: string }) => {
   switch (action.type) {
     case 'SET_RESPONSE':
       return {

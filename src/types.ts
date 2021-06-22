@@ -22,6 +22,10 @@ export type TForms = {
   [k: string]: TEasyForm;
 };
 
+export type TExternalApplicationState = {
+  forms: TForms;
+};
+
 export type TEasyFormErrors = {
   [k: string]: string[] | null;
 } & {

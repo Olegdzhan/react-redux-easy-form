@@ -19,7 +19,7 @@ export type TAppForms = {
 };
 
 export type TResponseState = {
-  [k: string]: any;
+  fullName?: string;
 };
 
 export type TAppState = {
