@@ -76,7 +76,7 @@ export const easyFormReducer = (state: TForms = {}, action: TActionCreators): TF
     case EEasyFormActionType.InitiateForm: {
       const { formName, initialValues } = action.payload;
 
-      const isEqualInitials = deepEqual(initialValues, state[formName][EEasyFormField.Initials]);
+      const isEqualInitials = deepEqual(initialValues, state?.[formName]?.[EEasyFormField.Initials]);
       if (isEqualInitials) {
         return state;
       }

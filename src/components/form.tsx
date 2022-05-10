@@ -4,7 +4,7 @@ import React, {
   useEffect,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { initiateForm } from '../action-creators';
+import { initiateForm, dropForm } from '../action-creators';
 import { FormContext } from '../form-context';
 import { RootValidator } from '../root-validator';
 import { TFormValidator, TShape } from '../types';
@@ -18,6 +18,7 @@ interface IFormProps extends FormHTMLAttributes<HTMLFormElement> {
 
 export const Form = memo<IFormProps>(({
   children,
+  dropOnUnmount,
   initialValues= {},
   name,
   validate,
@@ -35,6 +36,12 @@ export const Form = memo<IFormProps>(({
   useEffect(() => {
     dispatch(initiateForm(name, initialValues));
   }, [initialValues]);
+
+  useEffect(() => () => {
+    if (dropOnUnmount) {
+      dispatch(dropForm(name))
+    }
+  }, []);
 
   return (
     <form name={name} {...htmlFormProps}>
