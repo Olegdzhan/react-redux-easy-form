@@ -10,6 +10,7 @@ import { RootValidator } from '../root-validator';
 import { TFormValidator, TShape } from '../types';
 
 interface IFormProps extends FormHTMLAttributes<HTMLFormElement> {
+  dropOnUnmount?: boolean;
   initialValues?: TShape;
   name: string;
   validate?: TFormValidator;

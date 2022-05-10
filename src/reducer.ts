@@ -1,6 +1,7 @@
 import { TActionCreators } from './action-creators';
 import { EEasyFormActionType, EEasyFormFieldStatus, EEasyFormField } from './enums';
 import { TForms } from './types';
+import { deepEqual } from './utils';
 
 const setEasyFormValue = (
   formState: TForms,
@@ -74,6 +75,12 @@ export const easyFormReducer = (state: TForms = {}, action: TActionCreators): TF
 
     case EEasyFormActionType.InitiateForm: {
       const { formName, initialValues } = action.payload;
+
+      const isEqualInitials = deepEqual(initialValues, state[formName][EEasyFormField.Initials]);
+      if (isEqualInitials) {
+        return state;
+      }
+
       return {
         ...state,
         [formName]: {

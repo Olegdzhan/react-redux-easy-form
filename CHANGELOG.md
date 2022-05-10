@@ -1,4 +1,6 @@
 # v1.x
+## v1.0.4
+- fix infinity loop on initiate form
 ## v1.0.3
 - fix `validateAll` action-creator in when calls fields validators
 - fix `createGetFormSafetyValues` selector-creator for pristine values
