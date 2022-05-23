@@ -1,4 +1,6 @@
 # v1.x
+## v1.1.1
+- fixed action `clearValue` for fields with undefined validators in `field configs`
 ## v1.1.0
 - add prop `dropOnUnmount` for `Form` component
 - fix infinity loop on initiate form
