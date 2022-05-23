@@ -1,15 +1,14 @@
 import {
-  AnyAction,
   applyMiddleware,
   createStore,
   combineReducers,
   Store,
+  Middleware,
 } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { easyFormMiddleware, easyFormReducer } from '@/src';
-import { TAppState } from './app-types';
 
-const responseReducer = (state = {}, action: AnyAction) => {
+const responseReducer = (state = {}, action: { type: 'SET_RESPONSE', payload: string }) => {
   switch (action.type) {
     case 'SET_RESPONSE':
       return {
@@ -26,10 +25,10 @@ const rootReducer = combineReducers({
   response: responseReducer,
 });
 
-export const store: Store<Partial<TAppState>> = createStore(
+export const store: Store<any, any> = createStore(
   rootReducer,
   {},
   composeWithDevTools(
-    applyMiddleware(easyFormMiddleware),
+    applyMiddleware(easyFormMiddleware as Middleware),
   ),
 );

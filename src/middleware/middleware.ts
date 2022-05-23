@@ -16,13 +16,13 @@ import {
   createGetIsFormFieldPristine,
   getForms,
 } from '../selectors';
-import { TShape, TValidator } from '../types';
+import { TExternalApplicationState, TValidator } from '../types';
 import { changeValue, validateField } from './middleware-actions';
 import { EEasyFormLogicActionType } from './middleware-enums';
 
 export const easyFormMiddleware =
-  (store: any) => (next: Dispatch) => (action: AnyAction) => {
-    const state: TShape = store.getState();
+  (store: Store) => (next: Dispatch) => (action: AnyAction) => {
+    const state: TExternalApplicationState = store.getState();
     const formsState = getForms(state);
     if (!formsState) {
       throw new Error(
@@ -47,7 +47,9 @@ export const easyFormMiddleware =
           next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
         }
         next(clearFieldValue(formName, fieldName));
-        return store.dispatch(validateField(formName, fieldName));
+        const rootValidator = new RootValidator(formName);
+        const fieldsValidators = rootValidator.validators[1];
+        return fieldsValidators[fieldName] ? store.dispatch(validateField(formName, fieldName)) : undefined;
       }
 
       case EEasyFormLogicActionType.ChangeValueAndValidate: {
@@ -63,7 +65,7 @@ export const easyFormMiddleware =
         const rootValidator = new RootValidator(formName);
         const fieldsValidators = rootValidator.validators[1];
         if (!fieldsValidators[fieldName]) {
-          throw new Error(`Seems you try to validate field ${fieldName} of form ${formName}, but have not set the validator function for the field`);
+          throw new Error(`Seems you try to validate field ${fieldName as string} of form ${formName as string}, but have not set the validator function for the field`);
         }
         const nextFieldErrors: string[] = fieldsValidators[fieldName].map(
           (validator: TValidator) => validator(currentFieldValue, state)
@@ -97,7 +99,7 @@ export const easyFormMiddleware =
         const validationKeys = Object.keys(fieldsValidators);
         if (validationKeys.length) {
           validationKeys.forEach((key) => {
-            next(validateField(formName, key));
+            store.dispatch(validateField(formName, key));
           })
         }
         return next(action);

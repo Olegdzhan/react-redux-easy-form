@@ -1,13 +1,14 @@
-import React, { memo } from 'react';
+import React, { ChangeEvent, memo } from 'react';
 import { IFieldConfig, useField } from '@/src';
 import { EProfileFieldName } from '../profile-enums';
 import { ProfileFieldsValidator } from './profile-fields-validator';
 
 const fieldConfig: IFieldConfig = {
-  changeValueGetter: (event: any): string => event.target.value,
+  changeValueGetter: (event: ChangeEvent<HTMLInputElement>): string => event.target.value,
   validateOnChange: true,
   validators: [
     ProfileFieldsValidator.validateMaxAge,
+    ProfileFieldsValidator.validateMinAge,
   ],
 };
 

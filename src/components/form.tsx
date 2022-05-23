@@ -1,26 +1,28 @@
-import React, { memo, useEffect } from 'react';
+import React, {
+  FormHTMLAttributes,
+  memo,
+  useEffect,
+} from 'react';
 import { useDispatch } from 'react-redux';
-import { initiateForm } from '../action-creators';
+import { initiateForm, dropForm } from '../action-creators';
 import { FormContext } from '../form-context';
 import { RootValidator } from '../root-validator';
 import { TFormValidator, TShape } from '../types';
 
-interface IFormProps {
-  children: React.ReactNode;
-  className?: string;
+interface IFormProps extends FormHTMLAttributes<HTMLFormElement> {
+  dropOnUnmount?: boolean;
   initialValues?: TShape;
   name: string;
-  onSubmit?: (event: React.SyntheticEvent) => void;
   validate?: TFormValidator;
 }
 
 export const Form = memo<IFormProps>(({
   children,
-  className,
+  dropOnUnmount,
   initialValues= {},
   name,
-  onSubmit,
   validate,
+  ...htmlFormProps
 }) => {
   const dispatch = useDispatch();
 
@@ -35,12 +37,14 @@ export const Form = memo<IFormProps>(({
     dispatch(initiateForm(name, initialValues));
   }, [initialValues]);
 
+  useEffect(() => () => {
+    if (dropOnUnmount) {
+      dispatch(dropForm(name))
+    }
+  }, []);
+
   return (
-    <form
-      className={className}
-      name={name as string}
-      onSubmit={onSubmit}
-    >
+    <form name={name} {...htmlFormProps}>
       <FormContext.Provider value={name}>
         {children}
       </FormContext.Provider>

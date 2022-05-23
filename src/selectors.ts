@@ -1,33 +1,44 @@
-import { createSelector } from 'reselect';
+import { createSelector, Selector } from 'reselect';
 import { EEasyFormField, EEasyFormFieldStatus } from './enums';
 import {
   TEasyForm,
   TEasyFormErrors,
   TEasyFormFieldErrors,
   TEasyFormStatuses,
+  TExternalApplicationState,
+  TForms,
   TShape,
 } from './types';
 
-export const getForms = <R = any>(state: any): R => state.forms;
+export const getForms = (state: TExternalApplicationState): TForms => state.forms;
 
-export const createGetForm = <R = any>(formName: string) => createSelector(
-  getForms,
-  (forms: TShape): R | undefined => forms?.[formName],
+export const createGetForm = (formName: string): Selector<TExternalApplicationState, TEasyForm | undefined> => (
+  createSelector(
+    getForms,
+    (forms: TForms): TEasyForm | undefined => forms?.[formName],
+  )
 );
 
-export const createGetCommonFormErrors = (formName: string) => createSelector(
+export const createGetCommonFormErrors = (formName: string): Selector<
+  TExternalApplicationState,
+  string[] | null | undefined
+> => createSelector(
   createGetForm(formName),
   (form: TEasyForm | undefined): string[] | null | undefined => form?.[EEasyFormField.FormErrors],
 );
 
-export const createGetFormAllFieldsErrors = (formName: string) => createSelector(
+export const createGetFormAllFieldsErrors = (formName: string): Selector<
+  TExternalApplicationState,
+  TEasyFormFieldErrors | undefined
+> => createSelector(
   createGetForm(formName),
   (form: TEasyForm | undefined): TEasyFormFieldErrors | undefined => form?.[EEasyFormField.FieldErrors],
 );
 
-export const createGetFormErrors = (
-  formName: string,
-) => createSelector(
+export const createGetFormErrors = (formName: string): Selector<
+  TExternalApplicationState,
+  TEasyFormErrors | undefined
+> => createSelector(
   createGetCommonFormErrors(formName),
   createGetFormAllFieldsErrors(formName),
   (
@@ -44,7 +55,7 @@ export const createGetFormErrors = (
   },
 );
 
-export const createGetIsFormValid = (formName: string) => createSelector(
+export const createGetIsFormValid = (formName: string): Selector<TExternalApplicationState, boolean> => createSelector(
   createGetFormErrors(formName),
   (formErrors: TEasyFormErrors | undefined): boolean => {
     if (!formErrors) {
@@ -59,42 +70,50 @@ export const createGetIsFormValid = (formName: string) => createSelector(
   },
 );
 
-export const createGetFormValues = (formName: string) => createSelector(
-  createGetForm(formName),
-  (form: TEasyForm | undefined): any => form?.[EEasyFormField.Values],
+export const createGetFormValues = (formName: string): Selector<TExternalApplicationState, TShape | undefined> => (
+  createSelector(
+    createGetForm(formName),
+    (form: TEasyForm | undefined): TShape | undefined => form?.[EEasyFormField.Values],
+  )
 );
 
-export const createGetFormInitialValues = (
-  formName: string,
-) => createSelector(
+export const createGetFormInitialValues = (formName: string): Selector<
+  TExternalApplicationState,
+  TShape | undefined
+> => createSelector(
   createGetForm(formName),
-  (form: TEasyForm | undefined): any => form?.[EEasyFormField.Initials],
+  (form: TEasyForm | undefined): TShape | undefined => form?.[EEasyFormField.Initials],
 );
 
-export const createGetFormStatuses = (formName: string) => createSelector(
+export const createGetFormStatuses = (formName: string): Selector<
+  TExternalApplicationState,
+  TEasyFormStatuses | undefined
+> => createSelector(
   createGetForm(formName),
   (form: TEasyForm | undefined): TEasyFormStatuses | undefined => form?.[EEasyFormField.Statuses],
 );
 
-export const createGetIsFormPristine = (formName: string) => createSelector(
-  createGetFormStatuses(formName),
-  (formStatuses: TEasyFormStatuses | undefined): boolean => {
-    if (!formStatuses) {
-      return true;
-    }
-    for (const key in formStatuses) {
-      if (formStatuses[key] === EEasyFormFieldStatus.Dirty) {
-        return false;
+export const createGetIsFormPristine = (formName: string): Selector<TExternalApplicationState, boolean> => (
+  createSelector(
+    createGetFormStatuses(formName),
+    (formStatuses: TEasyFormStatuses | undefined): boolean => {
+      if (!formStatuses) {
+        return true;
       }
-    }
-    return true;
-  },
+      for (const key in formStatuses) {
+        if (formStatuses[key] === EEasyFormFieldStatus.Dirty) {
+          return false;
+        }
+      }
+      return true;
+    },
+  )
 );
 
 export const createGetFormFieldValue = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, any> => createSelector(
   createGetFormValues(formName),
   (formValues: TShape | undefined): any => formValues?.[fieldName],
 );
@@ -102,7 +121,7 @@ export const createGetFormFieldValue = (
 export const createGetFormFieldInitialValue = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, any> => createSelector(
   createGetFormInitialValues(formName),
   (formInitialValues: TShape | undefined): any => formInitialValues?.[fieldName],
 );
@@ -110,7 +129,7 @@ export const createGetFormFieldInitialValue = (
 export const createGetFormFieldErrors = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, string[] | null | undefined> => createSelector(
   createGetFormAllFieldsErrors(formName),
   (allFormFieldsErrors: TEasyFormFieldErrors | undefined): string[] | null | undefined => (
     allFormFieldsErrors?.[fieldName]
@@ -120,7 +139,7 @@ export const createGetFormFieldErrors = (
 export const createGetIsFormFieldValid = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, boolean> => createSelector(
   createGetFormFieldErrors(formName, fieldName),
   (formFieldErrors: string[] | null | undefined): boolean => !formFieldErrors,
 );
@@ -128,7 +147,7 @@ export const createGetIsFormFieldValid = (
 export const createGetFormFieldStatus = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, EEasyFormFieldStatus | undefined> => createSelector(
   createGetFormStatuses(formName),
   (formStatuses: TEasyFormStatuses | undefined): EEasyFormFieldStatus | undefined => formStatuses?.[fieldName],
 );
@@ -136,7 +155,7 @@ export const createGetFormFieldStatus = (
 export const createGetIsFormFieldPristine = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, boolean> => createSelector(
   createGetFormFieldStatus(formName, fieldName),
   (fieldStatus: EEasyFormFieldStatus | undefined): boolean => (
     !fieldStatus || fieldStatus === EEasyFormFieldStatus.Pristine
@@ -146,7 +165,7 @@ export const createGetIsFormFieldPristine = (
 export const createGetFormFieldSafetyValue = (
   formName: string,
   fieldName: string,
-) => createSelector(
+): Selector<TExternalApplicationState, any> => createSelector(
   createGetIsFormFieldPristine(formName, fieldName),
   createGetFormFieldInitialValue(formName, fieldName),
   createGetFormFieldValue(formName, fieldName),
@@ -159,7 +178,10 @@ export const createGetFormFieldSafetyValue = (
   ),
 );
 
-export const createGetFormSafetyValues = (formName: string) => createSelector(
+export const createGetFormSafetyValues = (formName: string): Selector<
+  TExternalApplicationState,
+  TShape | undefined
+> => createSelector(
   createGetFormStatuses(formName),
   createGetFormInitialValues(formName),
   createGetFormValues(formName),
@@ -168,18 +190,23 @@ export const createGetFormSafetyValues = (formName: string) => createSelector(
     formInitials: TShape | undefined,
     formValues: TShape | undefined,
   ): TShape | undefined => {
-    if (!formStatuses || !formInitials || !formValues) {
+    if (!formStatuses || (!formInitials && !formValues)) {
       return;
     }
 
     const result: TShape = {};
-    const setResultKeyValue = (key: string) => {
-      result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine
-        ? formValues[key] || formInitials[key]
-        : formValues[key];
+    const setResultKeyValue = (key: string): void => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      result[key] = formStatuses[key] === EEasyFormFieldStatus.Pristine || !formStatuses[key]
+        ? formValues?.[key] || formInitials?.[key]
+        : formValues?.[key];
     };
-    Object.keys(formInitials).forEach(setResultKeyValue);
-    Object.keys(formValues).forEach(setResultKeyValue);
+
+    [formInitials, formValues]
+      .filter(Boolean)
+      .forEach((values: TShape): void => {
+        Object.keys(values).forEach(setResultKeyValue);
+      });
     return result;
   },
 );

@@ -1,8 +1,12 @@
 import { TAppState } from '../../app-types';
 
 export class ProfileFieldsValidator {
-  static validateMaxAge(value: string): string | null {
+  static validateMaxAge(value: string | undefined): string | null {
     return Number(value) > 99 ? 'Must be less than 99' : null;
+  }
+
+  static validateMinAge(value: string | undefined): string | null {
+    return Number(value ?? 0) < 1 ? 'Must be more than 1' : null;
   }
 
   static validateFullNameSpace(value: string): string | null {

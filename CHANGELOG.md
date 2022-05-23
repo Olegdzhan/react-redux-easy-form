@@ -1,4 +1,14 @@
 # v1.x
+## v1.1.1
+- fixed action `clearValue` for fields with undefined validators in `field configs`
+## v1.1.0
+- add prop `dropOnUnmount` for `Form` component
+- fix infinity loop on initiate form
+## v1.0.3
+- fix `validateAll` action-creator in when calls fields validators
+- fix `createGetFormSafetyValues` selector-creator for pristine values
+## v1.0.2
+- Form component props interface updated with full list of `FormHTMLAttributes<HTMLFormElement>` props
 ## v1.0.0
 ### Full update of the library: 
 - previous versions are totally deprecated
