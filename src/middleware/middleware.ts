@@ -47,7 +47,9 @@ export const easyFormMiddleware =
           next(setFieldStatus(formName, fieldName, EEasyFormFieldStatus.Dirty));
         }
         next(clearFieldValue(formName, fieldName));
-        return store.dispatch(validateField(formName, fieldName));
+        const rootValidator = new RootValidator(formName);
+        const fieldsValidators = rootValidator.validators[1];
+        return fieldsValidators[fieldName] ? store.dispatch(validateField(formName, fieldName)) : undefined;
       }
 
       case EEasyFormLogicActionType.ChangeValueAndValidate: {
